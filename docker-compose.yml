@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+
+  db:
+    build:
+      context: .
+      dockerfile: database.Dockerfile
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: imdb
+      POSTGRES_USER: authenticator
+      POSTGRES_PASSWORD: sps
+
+  backend:
+    image: postgrest/postgrest
+    ports:
+      - "3000:3000"
+    environment:
+      PGRST_DB_URI: postgres://authenticator:sps@db:5432/imdb
+      PGRST_DB_SCHEMAS: "imdb"
+      PGRST_DB_ANON_ROLE: "web_anon"
+    depends_on:
+      - db
