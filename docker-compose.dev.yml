@@ -1,0 +1,22 @@
+# CONFIGURATION FOR LOCAL TESTING PURPOSES
+
+version: '3.1'
+
+services:
+
+  db:
+    extends:
+      file: docker-compose.yml
+      service: db
+
+  backend:
+    extends:
+      file: docker-compose.yml
+      service: backend
+  
+  # TODO
+  frontend:
+    build: 
+      context: .
+      dockerfile: frontend/Dockerfile
+    

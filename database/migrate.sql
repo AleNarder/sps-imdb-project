@@ -12,18 +12,6 @@ create table imdb.title_basics (
     genres text
 );
 
-create table imdb.title_ratings (
-    tconst text primary key,
-    averageRating decimal,
-    numVotes integer
-);
-
-COPY imdb.title_ratings
-FROM '/data/title.ratings.tsv'
-DELIMITER E'\t'
-QUOTE '"'
-CSV HEADER;
-
 COPY imdb.title_basics
 FROM '/data/title.basics.tsv'
 DELIMITER E'\t'
@@ -34,6 +22,5 @@ create role web_anon nologin;
 
 grant usage on schema imdb to web_anon;
 grant select on imdb.title_basics to web_anon;
-grant select on imdb.title_ratings to web_anon;
 
 grant web_anon to authenticator;

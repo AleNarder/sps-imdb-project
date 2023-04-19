@@ -3,27 +3,26 @@ version: '3.0'
 tasks:
 
   default:
-    desc: Installs dependencies, downloads data, builds docker images and spins the service containers
+    desc: Install dependencies, download data, build docker images and spin the service containers
     cmds:
       - task: download
-      - task: sanitize
-      - task: build
-      - task: run
+      - task: process
+      - task: start 
 
   download:
-    desc: Downloads and sanitizes required data
+    desc: Download and sanitize required data
     cmds:
       - touch data/raw/title.ratings.tsv data/raw/title.basics.tsv
       - wget -O - https://datasets.imdbws.com/title.ratings.tsv.gz | gzip -d > data/raw/title.ratings.tsv 
       - wget -O - https://datasets.imdbws.com/title.basics.tsv.gz | gzip -d > data/raw/title.basics.tsv
 
-  sanitize:
+  process:
     dir: data
     cmds:
-      - python sanitizer.py
+      - python process.py
 
   clean:
-    desc: Removes stopped service containers 
+    desc: Remove stopped service containers 
     cmds:
       - docker compose rm -f
 
@@ -36,4 +35,11 @@ tasks:
   run:
     desc: Run database and backend service containers
     cmds:
+      - docker compose up
+  
+  start:
+    desc: Run database and backend service containers
+    cmds:
+      - task: clean
+      - task: build
       - docker compose up

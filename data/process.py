@@ -1,19 +1,19 @@
 # %%
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
-print(f'pandas v {pd.__version__}')
+print(f'pandas v.{pd.__version__}')
 
 # %%
 # ============================
-# SANITIZE TITLE_BASICS
+# PROCESS TITLE_BASICS
 # ============================
-print("sanitizer[title.basics.tsv]: loading raw data...")
+print("processor[title.basics.tsv]: loading raw data...")
 title_basics_df = pd.read_csv("raw/title.basics.tsv", sep="\t",  quotechar='"')
 
 
 # %%
 # Remove empty fields
-print("sanitizer[title.basics.tsv]: imputing empty fields...")
+print("processor[title.basics.tsv]: imputing empty fields...")
 title_basics_df["startYear"]        = title_basics_df["startYear"].replace("\\N", -1)
 title_basics_df["endYear"]          = title_basics_df["endYear"].replace("\\N", -1)
 title_basics_df["runtimeMinutes"]   = title_basics_df["runtimeMinutes"].replace("\\N", -1)
@@ -24,7 +24,7 @@ title_basics_df["isAdult"]          = title_basics_df["isAdult"].replace("\\N", 
 # Some tuples are not processed correctly: tab characters inside originalTitle causes wrong column/data association,
 # resulting in fields shifted to left by one positions
 
-print("sanitizer[title.basics.tsv]: fixing shifted tuples...")
+print("processor[title.basics.tsv]: fixing shifted tuples...")
 
 wrong_splitted = title_basics_df.loc[title_basics_df["genres"].isna()]
 
@@ -48,18 +48,30 @@ for idx, row in wrong_splitted.iterrows():
 
 # %%
 # Store sanitized
-print("sanitizer[title.basics.tsv]: storing sanitized data...")
-title_basics_df.to_csv("sanitized/title.basics.tsv", sep='\t', quotechar='"', index=False)
+print("processor[title.basics.tsv]: storing processed data...")
+title_basics_df.to_csv("processed/title.basics.tsv", sep='\t', quotechar='"', index=False)
 
 # %%
 # ============================
-# SANITIZE TITLE_RATINGS
+# PROCESS TITLE_RATINGS
 # ============================
-print("sanitizer[title.ratings.tsv]: loading raw data...")
+print("processor[title.ratings.tsv]: loading raw data...")
 title_ratings_df = pd.read_csv("raw/title.ratings.tsv", sep="\t",  quotechar='"')
+
+
+#%%
+print("processor[title.ratings.tsv]: assigning probabilities...")
+
+title_ratings_df["prob"] = [0.0 for i in range (0, len(title_ratings_df.index), 1)]
+
+title_ratings_sum = 0
+
+for rating in title_ratings_df["averageRating"]:
+    title_ratings_sum += rating
+
+title_ratings_df["prob"] = title_ratings_df["averageRating"].apply(lambda x: x / title_ratings_sum )
 
 # %%
 # No sanitization required -> store
-print("sanitizer[title.ratings.tsv]: storing sanitized data...")
-title_ratings_df.to_csv("sanitized/title.ratings.tsv", sep='\t', quotechar='"', index=False)
-# %%
+print("processor[title.ratings.tsv]: storing processed data...")
+title_ratings_df.to_csv("processed/title.ratings.tsv", sep='\t', quotechar='"', index=False)

@@ -1,3 +1,5 @@
+# CONFIGURATION FOR PERFORMANCE ANALYSIS
+
 version: '3.1'
 
 services:
@@ -5,16 +7,22 @@ services:
   db:
     build:
       context: .
-      dockerfile: database.Dockerfile
+      dockerfile: database/Dockerfile
     ports:
       - "5433:5432"
     environment:
       POSTGRES_DB: imdb
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
+    volumes:
+      - ./database/postgres.conf:/etc/postgresql/postgresql.conf
+      - ./database/migrate.sql:/docker-entrypoint-initdb.d/migrate.sql
+      - ./data/processed/title.basics.tsv:/data/title.basics.tsv
 
   backend:
-    image: postgrest/postgrest
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
       - "3000:3000"
     environment:
