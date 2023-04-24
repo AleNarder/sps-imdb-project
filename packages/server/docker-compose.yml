@@ -16,7 +16,7 @@ services:
       POSTGRES_PASSWORD: sps
     volumes:
       - ./database/migrate.sql:/docker-entrypoint-initdb.d/migrate.sql
-      - ./data/processed/title.basics.tsv:/data/title.basics.tsv
+      - ../data/processed/title.basics.tsv:/data/title.basics.tsv
 
   backend:
     build:
