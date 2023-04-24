@@ -1,0 +1,41 @@
+# CONFIGURATION FOR PERFORMANCE ANALYSIS
+
+version: '3.1'
+
+services:
+
+  db:
+    build:
+      context: .
+      dockerfile: database/Dockerfile
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: imdb
+      POSTGRES_USER: authenticator
+      POSTGRES_PASSWORD: sps
+    volumes:
+      - ./database/migrate.sql:/docker-entrypoint-initdb.d/migrate.sql
+      - ./data/processed/title.basics.tsv:/data/title.basics.tsv
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      PGRST_DB_URI: postgres://authenticator:sps@db:5432/imdb
+      PGRST_DB_SCHEMAS: "imdb"
+      PGRST_DB_ANON_ROLE: "web_anon"
+    depends_on:
+      - db
+
+  swagger:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "3001:8080"
+    expose:
+      - "8080"
+    environment:
+      API_URL: http://localhost:3000/
