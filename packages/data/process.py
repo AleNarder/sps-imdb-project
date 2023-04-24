@@ -8,7 +8,7 @@ print(f'pandas v.{pd.__version__}')
 # PROCESS TITLE_BASICS
 # ============================
 print("processor[title.basics.tsv]: loading raw data...")
-title_basics_df = pd.read_csv("raw/title.basics.tsv", sep="\t",  quotechar='"')
+title_basics_df = pd.read_csv("raw/title.basics.tsv", sep="\t",  quotechar='"', low_memory=False)
 
 
 # %%
