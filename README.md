@@ -30,13 +30,12 @@ Run three service containers:
     psql -h localhost -p 5433 -d imdb -U authenticator 
     ```
 
-  
-
 - **backend**
 
     Available on [http://localhost:3000](http://localhost:3000)
 
-    A postgREST API connected to the **db** service container. You can send queries via browser or  curl. It's available on []
+    A postgREST API connected to the **db** service container. You can send queries via browser or  curl.
+
 - **swagger**
 
     Available on [http://localhost:3000](http://localhost:3001)
