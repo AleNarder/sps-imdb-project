@@ -1,45 +1,39 @@
 version: '3.0'
 
 tasks:
-
   default:
-    desc: Install dependencies, download data, build docker images and spin the service containers
-    cmds:
-      - task: download
-      - task: process
-      - task: start 
 
-  download:
-    desc: Download and sanitize required data
-    cmds:
-      - touch data/raw/title.ratings.tsv data/raw/title.basics.tsv
-      - wget -O - https://datasets.imdbws.com/title.ratings.tsv.gz | gzip -d > data/raw/title.ratings.tsv 
-      - wget -O - https://datasets.imdbws.com/title.basics.tsv.gz | gzip -d > data/raw/title.basics.tsv
+    desc: Process data 
 
-  process:
-    dir: data
+    dir: packages/data
+    
     cmds:
-      - python process.py
+      - docker build -f Dockerfile . -t sps-setup
+      - |
+        docker run  \
+        --mount type=bind,source="$(pwd)/raw",target=/app/raw \
+        --mount type=bind,source="$(pwd)/processed",target="/app/processed" \
+        -it sps-setup:latest
 
-  clean:
-    desc: Remove stopped service containers 
-    cmds:
-      - docker compose rm -f
+  run:server:
 
-  build:
-    desc: Build docker images for the service containers
-    cmds:
-      - task: clean
-      - docker compose build
+    desc: Runs the server stack
 
-  run:
-    desc: Run database and backend service containers
+    dir: packages/server
+    
+    preconditions: 
+      - test -f ../data/processed/title.basics.tsv
+      - test -f ../data/processed/title.ratings.tsv
+
     cmds:
       - docker compose up
   
-  start:
-    desc: Run database and backend service containers
+  run:client:
+    
+    desc: Runs the client web app
+    
+    dir: packages/client
+    
     cmds:
-      - task: clean
-      - task: build
-      - docker compose up
+      - echo TODO
+
