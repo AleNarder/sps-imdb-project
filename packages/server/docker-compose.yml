@@ -5,9 +5,7 @@ version: '3.1'
 services:
 
   db:
-    build:
-      context: .
-      dockerfile: database/Dockerfile
+    image: postgres
     ports:
       - "5433:5432"
     environment:
@@ -15,13 +13,11 @@ services:
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
     volumes:
-      - ./database/migrate.sql:/docker-entrypoint-initdb.d/migrate.sql
+      - ./migrate.sql:/docker-entrypoint-initdb.d/migrate.sql
       - ../data/processed/title.basics.tsv:/data/title.basics.tsv
 
   backend:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
+    image: postgrest/postgrest
     ports:
       - "3000:3000"
     environment:
