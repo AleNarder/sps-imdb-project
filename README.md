@@ -40,11 +40,16 @@ Run three service containers:
 
     Available on [http://localhost:3000](http://localhost:3001)
 
-    A swagger editor which maps the backend service endpoints
+    A swagger editor which explain the backend service endpoints through OpenAPI standard
 
-### run:frontend
+### run:tsung:closed-loop
 
-TODO
+Perform a closed loop test with tsung. This command can be configured using the variables declared inside the taskfile
+
+### generate:tsung:query-set
+
+Build the query set necessary for closed loop testing. 10_000 random ids are chosen accordingly to rating probability
+
 ## FAQ
 
 **How are postgREST queries structured?**
