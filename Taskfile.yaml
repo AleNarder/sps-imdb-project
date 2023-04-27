@@ -15,6 +15,15 @@ tasks:
         --mount type=bind,source="$(pwd)/processed",target="/app/processed" \
         -it sps-setup:latest
 
+  generate:tsung:query-set:
+    
+    descr: Build the query set. 10_000 randon ids accordingly to rating probability
+
+    dir: packages/client/tsung
+
+    cmds:
+      - python3 query_builder.py
+
   run:server:
 
     desc: Runs the server stack
@@ -22,18 +31,30 @@ tasks:
     dir: packages/server
     
     preconditions: 
-      - test -f ../data/processed/title.basics.tsv
-      - test -f ../data/processed/title.ratings.tsv
+      - sh: test -f ../data/processed/title.basics.tsv
+        msg: MIGRATION DATA MISSING. Launch task in the terminal
+      - sh: test -f ../data/processed/title.ratings.tsv
+        msg: RATING DATA MISSING. Launch task in the terminal
 
     cmds:
       - docker compose up
   
-  run:client:
-    
+  run:tsung:closed-loop:
+  
     desc: Runs the client web app
-    
-    dir: packages/client
-    
-    cmds:
-      - echo TODO
 
+    dir: packages/client/tsung
+    
+    vars:
+      TSUNG_HOST: localhost
+      TSUNG_PORT: 3000
+      TSUNG_LOG_DIR: ./logs
+
+    preconditions:
+      - sh: test -f queries.csv
+        msg: "QUERY SET MISSING. Generate it with task generate:tsung:query-set"
+      - sh:  test ! -z "$(curl -Is http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}} | head -1)"
+        msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server?
+
+    cmds:
+      - python3 closed_loop.py --host {{.TSUNG_HOST}} --port {{.TSUNG_PORT}} | tsung -k -l {{ .TSUNG_LOG_DIR }} -f - start
