@@ -27,6 +27,9 @@ services:
     depends_on:
       - db
 
+  load_balancer:
+    # TODO
+
   swagger:
     image: swaggerapi/swagger-ui
     ports:
