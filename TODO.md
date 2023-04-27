@@ -15,14 +15,10 @@
     - [x] Create basic postgREST docker image
     - [x] Add postgREST service container to docker compose services
 
-- ## Frontend
-    - [] Create basic web app skeleton
-    - [] Create basic web app docker image
-    - [] Add basic web app service container to docker compose services
 
 - ## Tests
     - [x] Create a query set. The probability that a film is searched is proportional to the number of rating that it has received
-    - [] Perform a closed-loop test with tsung using the query set
+    - [x] Perform a closed-loop test with tsung using the query set
     - [] Improve horizontal scalability (through replication) and vertical scalability (through db tuning and resource enhancement)
     - [] Test the system using JMT to study the expected response time as function of the number of users. Find the optimal number of users
 
