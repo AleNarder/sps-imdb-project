@@ -17,7 +17,7 @@ tasks:
 
   generate:tsung:query-set:
     
-    descr: Build the query set. 10_000 randon ids accordingly to rating probability
+    descr: Build the query set. Generate 10_000 random ids accordingly to the rating probability
 
     dir: packages/client/tsung
 
@@ -29,19 +29,22 @@ tasks:
     desc: Runs the server stack
 
     dir: packages/server
+
+    vars:
+      BACKEND_REPLICAS: 1
     
     preconditions: 
       - sh: test -f ../data/processed/title.basics.tsv
         msg: MIGRATION DATA MISSING. Launch task in the terminal
       - sh: test -f ../data/processed/title.ratings.tsv
         msg: RATING DATA MISSING. Launch task in the terminal
-
+    
     cmds:
-      - docker compose up -d --scale backend=2
+      - docker compose up --scale backend={{ .BACKEND_REPLICAS }}
   
   run:tsung:closed-loop:
   
-    desc: Runs the client web app
+    desc: Perform tsung closed loop test
 
     dir: packages/client/tsung
     
