@@ -37,7 +37,7 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
 
     cmds:
-      - docker compose up
+      - docker compose up -d --scale backend=2
   
   run:tsung:closed-loop:
   
