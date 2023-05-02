@@ -7,6 +7,11 @@ services:
   db:
     image: postgres
 
+    environment:
+      POSTGRES_DB: imdb
+      POSTGRES_USER: authenticator
+      POSTGRES_PASSWORD: sps
+
     # Reources Limits
     mem_limit: 1024m
     mem_reservation: 64M
@@ -15,62 +20,47 @@ services:
     ports:
     # Maps port 5433 on localhost to port 5432 of the container
       - "5433:5432"
-    environment:
-      POSTGRES_DB: imdb
-      POSTGRES_USER: authenticator
-      POSTGRES_PASSWORD: sps
+
     volumes:
-      - ./00_migrate.sql:/docker-entrypoint-initdb.d/00_migrate.sql
       - ../data/processed/title.basics.tsv:/data/title.basics.tsv
       - ../data/processed/title.ratings.tsv:/data/title.ratings.tsv
-      - ./sql/02_functions.sql:/docker-entrypoint-initdb.d/02_functions.sql
-      - ./sql/01_views.sql:/docker-entrypoint-initdb.d/01_views.sql
+      - ./sql/:/docker-entrypoint-initdb.d/
 
   backend:
     image: postgrest/postgrest
 
-    # Reources Limits
-    mem_limit: 1024m
-    mem_reservation: 64M
-    cpus: 0.2
-
-    # ports:
-    # # Maps port 3000 on localhost to port 3000 of the container
-    #   - "3000:3000"
     environment:
       PGRST_DB_URI: postgres://authenticator:sps@db:5432/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
-    depends_on:
-      - db
 
-  nginx:
-  # The load balancer
-    image: nginx:latest
-
-    # Reources Limits
-    mem_limit: 1024m
-    mem_reservation: 128M
-    cpus: 0.2
-
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - backend
-    ports:
-    # Maps port 8080 on localhost to port 80 of the container
-      - "3000:80"
-
-  swagger:
-    image: swaggerapi/swagger-ui
-
-    # Reources Limits
+    # Resources Limits
     mem_limit: 1024m
     mem_reservation: 64M
     cpus: 0.2
 
+    expose:
+      - "3000"
+    
+    depends_on:
+      - db
+
+  nginx:
+
+    image: nginx:latest
+    
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    
     ports:
-    # Maps port 3001 on localhost to port 8080 of the container
+      - "3000:80"
+    
+    depends_on:
+      - db
+
+  swagger:
+    image: swaggerapi/swagger-ui
+    ports:
       - "3001:8080"
     expose:
       - "8080"
