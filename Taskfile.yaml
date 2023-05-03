@@ -19,7 +19,7 @@ tasks:
     
     descr: Build the query set. Generate 10_000 random ids accordingly to the rating probability
 
-    dir: packages/client/tsung
+    dir: packages/tsung
 
     cmds:
       - python3 query_builder.py
@@ -46,7 +46,7 @@ tasks:
   
     desc: Perform tsung closed loop test
 
-    dir: packages/client/tsung
+    dir: packages/tsung
     
     vars:
       TSUNG_HOST: localhost
