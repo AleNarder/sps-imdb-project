@@ -22,9 +22,13 @@ services:
       - "5433:5432"
 
     volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
       - ../data/processed/title.basics.tsv:/data/title.basics.tsv
       - ../data/processed/title.ratings.tsv:/data/title.ratings.tsv
-      - ./sql/:/docker-entrypoint-initdb.d/
+      - ../data/processed/title.crew.tsv:/data/title.crew.tsv
+      - ../data/processed/title.episode.tsv:/data/title.episode.tsv
+      - ../data/processed/title.principals.tsv:/data/title.principals.tsv
+      - ../data/processed/name.basics.tsv:/data/name.basics.tsv
 
   backend:
     image: postgrest/postgrest

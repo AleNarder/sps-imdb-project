@@ -2,6 +2,10 @@
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 print(f'pandas v.{pd.__version__}')
+import gc
+
+# %%
+
 
 # %%
 # ============================
@@ -51,6 +55,10 @@ for idx, row in wrong_splitted.iterrows():
 print("processor[title.basics.tsv]: storing processed data...")
 title_basics_df.to_csv("processed/title.basics.tsv", sep='\t', quotechar='"', index=False)
 
+del title_basics_df
+del wrong_splitted
+gc.collect()
+
 # %%
 # ============================
 # PROCESS TITLE_RATINGS
@@ -75,3 +83,100 @@ title_ratings_df["prob"] = title_ratings_df["averageRating"].apply(lambda x: x /
 # No sanitization required -> store
 print("processor[title.ratings.tsv]: storing processed data...")
 title_ratings_df.to_csv("processed/title.ratings.tsv", sep='\t', quotechar='"', index=False)
+
+# %%
+# ============================
+# PROCESS TITLE_CREW
+# ============================
+print("processor[title.crew.tsv]: loading raw data...")
+title_crew_df = pd.read_csv("raw/title.crew.tsv", sep="\t",  quotechar='"')
+
+temp=[]
+for i in title_crew_df["directors"]:
+    temp.append('{' + i +'}')
+title_crew_df["directors"]=temp
+
+temp=[]
+for i in title_crew_df["writers"]:
+    temp.append('{' + i +'}')
+title_crew_df["writers"]=temp
+
+title_crew_df["writers"]           = title_crew_df["writers"].replace("\\N", "{}")
+title_crew_df["directors"]         = title_crew_df["directors"].replace("\\N", "{}")
+
+print("processor[title.crew.tsv]: storing processed data...")
+title_crew_df.to_csv("processed/title.crew.tsv", sep='\t', quotechar='"', index=False)
+
+
+# %%
+# ============================
+# PROCESS TITLE_EPISODE
+# ============================
+print("processor[title.episode.tsv]: loading raw data...")
+title_episode_df = pd.read_csv("raw/title.episode.tsv", sep="\t",  quotechar='"')
+
+print("processor[title.episode.tsv]: imputing empty fields...")
+title_episode_df["seasonNumber"]        = title_episode_df["seasonNumber"].replace("\\N", -1)
+title_episode_df["episodeNumber"]        = title_episode_df["episodeNumber"].replace("\\N", -1)
+
+
+
+print("processor[title.episode.tsv]: storing processed data...")
+title_episode_df.to_csv("processed/title.episode.tsv", sep='\t', quotechar='"', index=False)
+
+
+# %%
+# ============================
+# PROCESS NAME_BASICS
+# ============================
+print("processor[name.basics.tsv]: loading raw data...")
+name_basics_df = pd.read_csv("raw/name.basics.tsv", sep="\t",  quotechar='"')
+
+temp=[]
+for i in name_basics_df["primaryProfession"]:
+    temp.append('{' + str(i) +'}')
+name_basics_df["primaryProfession"]=temp
+temp=[]
+for i in name_basics_df["knownForTitles"]:
+    temp.append('{' + str(i) +'}')
+name_basics_df["knownForTitles"]=temp
+
+print("processor[name.basics.tsv]: imputing empty fields...")
+name_basics_df["birthYear"]          = name_basics_df["birthYear"].replace("\\N", -1) #should be YYYY format dont know
+name_basics_df["deathYear"]          = name_basics_df["deathYear"].replace("\\N", -1) #should be YYYY format dont know
+name_basics_df["primaryProfession"]  = name_basics_df["primaryProfession"].replace("\\N", "<EMPTY>")
+name_basics_df["knownForTitles"]      = name_basics_df["knownForTitles"].replace("\\N", "<EMPTY>")
+
+
+
+
+print("processor[name.basics.tsv]: storing processed data...")
+name_basics_df.to_csv("processed/name.basics.tsv", sep='\t', quotechar='"', index=False)
+
+del title_crew_df
+del title_ratings_df
+del title_episode_df
+del name_basics_df
+del temp
+gc.collect()
+
+# %%
+# ============================
+# PROCESS TITLE_PRINCIPALS
+# ============================
+
+print("processor[title.principals.tsv]: loading raw data...")
+title_principals_df=None
+for chunk in pd.read_csv("raw/title.principals.tsv", sep="\t",  quotechar='"' , chunksize=1000000):
+    chunk["category"]  = chunk["category"].replace("\\N", "<EMPTY>")
+    chunk["job"]  = chunk["job"].replace("\\N", "<EMPTY>")
+    chunk["characters"]  = chunk["characters"].replace("\\N", "<EMPTY>")
+    chunk["ordering"]  = chunk["ordering"].replace("\\N", -1)
+    title_principals_df=pd.concat([title_principals_df,chunk])
+
+#title_principals_df = pd.read_csv("raw/title.principals.tsv", sep="\t",  quotechar='"' , low_memory=False)
+
+print("processor[title.principals.tsv]: storing processed data...")
+title_principals_df.to_csv("processed/title.principals.tsv", sep='\t', quotechar='"', index=False)
+
+
