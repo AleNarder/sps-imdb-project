@@ -23,6 +23,10 @@ services:
       - ./00_migrate.sql:/docker-entrypoint-initdb.d/00_migrate.sql
       - ../data/processed/title.basics.tsv:/data/title.basics.tsv
       - ../data/processed/title.ratings.tsv:/data/title.ratings.tsv
+      - ../data/processed/title.crew.tsv:/data/title.crew.tsv
+      - ../data/processed/title.episode.tsv:/data/title.episode.tsv
+      - ../data/processed/title.principals.tsv:/data/title.principals.tsv
+      - ../data/processed/name.basics.tsv:/data/name.basics.tsv
       - ./sql/02_functions.sql:/docker-entrypoint-initdb.d/02_functions.sql
       - ./sql/01_views.sql:/docker-entrypoint-initdb.d/01_views.sql
 
