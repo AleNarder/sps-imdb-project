@@ -12,7 +12,7 @@ import gc
 
 print("processor[title.principals.tsv]: loading raw data by chuncks...")
 title_principals_df=None
-for chunk in pd.read_csv("raw/title.principals.tsv", sep="\t",  quotechar='"' , chunksize=1000000):
+for chunk in pd.read_csv("raw/title.principals.tsv", sep="\t",  quotechar='"' , chunksize=100000):
     chunk["category"]  = chunk["category"].replace("\\N", "<EMPTY>")
     chunk["job"]  = chunk["job"].replace("\\N", "<EMPTY>")
     chunk["characters"]  = chunk["characters"].replace("\\N", "<EMPTY>")

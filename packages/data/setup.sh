@@ -1,7 +1,5 @@
 #!/bin/bash
 
-touch raw/title.ratings.tsv raw/title.basics.tsv
-
 if [ ! -s raw/title.ratings.tsv ]
 then
     wget -O - https://datasets.imdbws.com/title.ratings.tsv.gz | gzip -d > raw/title.ratings.tsv
@@ -36,13 +34,13 @@ else
     echo "[setup]: Title episode already downloaded"
 fi
 
-if [ ! -s raw/title.principals.tsv ]
-then
-    echo "[setup]: Downloading title principals..."
-    wget -O - https://datasets.imdbws.com/title.principals.tsv.gz | gzip -d > raw/title.principals.tsv
-else
-    echo "[setup]: Title principals already downloaded"
-fi
+#   if [ ! -s raw/title.principals.tsv ]
+#   then
+#       echo "[setup]: Downloading title principals..."
+#       wget -O - https://datasets.imdbws.com/title.principals.tsv.gz | gzip -d > raw/title.principals.tsv
+#   else
+#       echo "[setup]: Title principals already downloaded"
+#   fi
 
 if [ ! -s raw/name.basics.tsv ]
 then
@@ -51,52 +49,45 @@ then
 else
     echo "[setup]: Name basics already downloaded"
 fi
-: '
-if [ ! -s processed/title.ratings.tsv ]
-then
-    python3 process.py
-else
-    echo "[setup]: data already processed"
-fi'
 
 if [ ! -s processed/title.basics.tsv ]
 then
-    python3 p_title_basics.py
+    python3 scripts/p_title_basics.py
 else
     echo "[setup]: title.basics.tsv already processed"
 fi
 
 if [ ! -s processed/title.ratings.tsv ]
 then
-    python3 p_title_ratings.py
+    python3 scripts/p_title_ratings.py
 else
     echo "[setup]: title.ratings.tsv already processed"
 fi
 
 if [ ! -s processed/title.crew.tsv ]
 then
-    python3 p_title_crew.py
+    python3 scripts/p_title_crew.py
 else
     echo "[setup]: title.crew.tsv already processed"
 fi
 
 if [ ! -s processed/title.episode.tsv ]
 then
-    python3 p_title_episode.py
+    python3 scripts/p_title_episode.py
 else
     echo "[setup]: title.episode.tsv already processed"
 fi
 
-if [ ! -s processed/title.principals.tsv ]
-then
-    python3 p_title_principals.py
-else
-    echo "[setup]: title.principals.tsv already processed"
-fi
+#   if [ ! -s processed/title.principals.tsv ]
+#   then
+#       python3 scripts/p_title_principals.py
+#   else
+#        echo "[setup]: title.principals.tsv already processed"
+#   fi
 
 if [ ! -s processed/name.basics.tsv ]
 then
-    python3 p_name_basics.py
+    python3 scripts/p_name_basics.py
 else
     echo "[setup]: title.name.tsv already processed"
 fi

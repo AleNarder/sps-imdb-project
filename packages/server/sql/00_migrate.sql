@@ -56,6 +56,7 @@ DELIMITER E'\t'
 QUOTE '"'
 CSV HEADER;
 
+/* 
 create table imdb.title_principals (
     tconst text , --should be foreing
     ordering integer,
@@ -71,7 +72,7 @@ FROM '/data/title.principals.tsv'
 DELIMITER E'\t'
 QUOTE '"'
 CSV HEADER;
-
+*/
 
 create table imdb.name_basics (
     nconst text primary key,
@@ -94,7 +95,7 @@ grant select on imdb.title_basics to web_anon;
 grant select on imdb.title_ratings to web_anon;
 grant select on imdb.title_crew to web_anon;
 grant select on imdb.title_episode to web_anon;
-grant select on imdb.title_principals to web_anon;
+--- grant select on imdb.title_principals to web_anon;
 grant select on imdb.name_basics to web_anon;
 
 
