@@ -1,9 +1,6 @@
 # %%
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
-#print(f'pandas v.{pd.__version__}')
-import gc
-# %%
 
 # %%
 # ============================
@@ -11,7 +8,6 @@ import gc
 # ============================
 print("processor[title.basics.tsv]: loading raw data...")
 title_basics_df = pd.read_csv("raw/title.basics.tsv", sep="\t",  quotechar='"', low_memory=False)
-
 
 # %%
 # Remove empty fields
