@@ -23,6 +23,7 @@ services:
 
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
+      - ./sql/:/sqlFiles/
       - ../data/processed/title.basics.tsv:/data/title.basics.tsv
       - ../data/processed/title.ratings.tsv:/data/title.ratings.tsv
       - ../data/processed/title.crew.tsv:/data/title.crew.tsv

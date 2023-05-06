@@ -61,3 +61,13 @@ tasks:
 
     cmds:
       - python3 closed_loop.py --host {{.TSUNG_HOST}} --port {{.TSUNG_PORT}} | tsung -k -l {{ .TSUNG_LOG_DIR }} -f - start
+
+
+  update:db-functions:
+    cmds:
+      - docker exec -it server-db-1 psql -U authenticator -d imdb -f ./sqlFiles/01_functions.sql
+
+  update:db-views:
+    cmds:
+      - docker exec -it sps-imdb-project-main-db-1 psql -U authenticator -d imdb -f sql/views.sql    
+

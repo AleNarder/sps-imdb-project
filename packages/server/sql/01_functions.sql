@@ -49,8 +49,26 @@ end;
 $$;
 
 
+create  function imdb.get_crew_count()
+returns int
+language plpgsql
+as
+$$
+declare
+   film_count integer;
+begin
+   select count(*) 
+   into film_count
+   from imdb.title_crew;
+   
+   return film_count;
+end;
+$$;
+
+
 
 
 --grant execute on function imdb.pgrst_watch() to web_anon;
 grant execute on function "imdb".get_basics_count() to web_anon;
 grant execute on function "imdb".get_ratings_count() to web_anon;
+grant execute on function "imdb".get_crew_count() to web_anon;

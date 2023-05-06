@@ -21,13 +21,6 @@ COPY data_process_scripts/p_title_episode.py app/p_title_episode.py
 COPY data_process_scripts/p_title_principals.py app/p_title_principals.py
 
 
-
-
-
-
-
-
-
 WORKDIR /app
 
 RUN pip install -r requirements.txt
