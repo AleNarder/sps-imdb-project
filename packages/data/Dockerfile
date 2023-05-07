@@ -12,14 +12,7 @@ RUN mkdir /app
 
 COPY --chmod=x setup.sh app/setup.sh
 COPY requirements.txt app/requirements.txt
-COPY process.py app/process.py
-COPY data_process_scripts/p_name_basics.py app/p_name_basics.py
-COPY data_process_scripts/p_title_basics.py app/p_title_basics.py
-COPY data_process_scripts/p_title_ratings.py app/p_title_ratings.py
-COPY data_process_scripts/p_title_crew.py app/p_title_crew.py
-COPY data_process_scripts/p_title_episode.py app/p_title_episode.py
-COPY data_process_scripts/p_title_principals.py app/p_title_principals.py
-
+COPY scripts/ app/scripts
 
 WORKDIR /app
 

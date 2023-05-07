@@ -38,7 +38,7 @@ Run three service containers:
 
 - **swagger**
 
-    Available on [http://localhost:3000](http://localhost:3001)
+    Available on [http://localhost:3001](http://localhost:3001)
 
     A swagger editor which explain the backend service endpoints through OpenAPI standard
 
