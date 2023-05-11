@@ -207,9 +207,3 @@ grant execute on function "imdb".get_title_directors(tconstvar text) to web_anon
 grant execute on function "imdb".get_title_writers(tconstvar text) to web_anon;
 grant execute on function "imdb".get_title_crew(tconstvar text) to web_anon;
 grant execute on function "imdb".get_title_details(tconstvar text) to web_anon;
-
-
-
-
-
-

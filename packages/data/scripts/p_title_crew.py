@@ -2,7 +2,6 @@
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 #print(f'pandas v.{pd.__version__}')
-import gc
 # %%
 
 # %%

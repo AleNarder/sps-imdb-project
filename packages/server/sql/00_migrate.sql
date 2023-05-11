@@ -74,6 +74,7 @@ QUOTE '"'
 CSV HEADER;
 */
 
+/*
 create table imdb.name_basics (
     nconst text primary key,
     primaryName text , 
@@ -87,6 +88,7 @@ FROM '/data/name.basics.tsv'
 DELIMITER E'\t'
 QUOTE '"'
 CSV HEADER;
+*/
 
 create role web_anon nologin;
 
@@ -96,7 +98,7 @@ grant select on imdb.title_ratings to web_anon;
 grant select on imdb.title_crew to web_anon;
 grant select on imdb.title_episode to web_anon;
 --- grant select on imdb.title_principals to web_anon;
-grant select on imdb.name_basics to web_anon;
+--- grant select on imdb.name_basics to web_anon;
 
 
 grant web_anon to authenticator;

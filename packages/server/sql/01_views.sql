@@ -1,8 +1,3 @@
-drop view imdb.director2 ;
-drop view imdb.title_fullprova;
-drop view imdb.title_infoplus2;
-
-
 create or replace view  imdb.title_info
 as  select    x.*,y.averageRating, y.numVotes, y.prob
     from      imdb.title_basics x
@@ -24,11 +19,6 @@ as  select c.tconst, n.nconst , n.primaryname
         as n(nconst , primaryname) 
     on  n.nconst = c.nconst;
 
-/*create or replace view imdb.title_fullprova
-as  select i.* , d.directors
-    from imdb.title_info i left join
-    imdb.director d on i.tconst = d.tconst;*/
-
 create or replace view  imdb.title_infoplus
 as  select  b.tconst, b.titletype, b.primarytitle, b.originaltitle, b.isAdult, b.startyear, b.endyear, b.runtimeminutes, b.genres,
             r.averageRating, r.numVotes, r.prob , 
@@ -41,8 +31,6 @@ as  select  b.tconst, b.titletype, b.primarytitle, b.originaltitle, b.isAdult, b
     group by b.tconst, b.titletype, b.primarytitle, b.originaltitle, b.isAdult, b.startyear, b.endyear, b.runtimeminutes, b.genres,
             r.averageRating, r.numVotes, r.prob , 
             c.directors , c.writers;
-
-
 
 create or replace view imdb.director2
 as  select c.tconst, n.nconst , n.primaryname
@@ -59,8 +47,6 @@ as  select c.tconst, n.nconst , n.primaryname
         ) 
         as n(nconst , primaryname) 
     on  n.nconst = c.nconst;
-
-
 
 
 create or replace view  imdb.title_infoplus2

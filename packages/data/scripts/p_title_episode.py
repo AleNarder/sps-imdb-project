@@ -13,8 +13,8 @@ print("processor[title.episode.tsv]: loading raw data...")
 title_episode_df = pd.read_csv("raw/title.episode.tsv", sep="\t",  quotechar='"')
 
 print("processor[title.episode.tsv]: imputing empty fields...")
-title_episode_df["seasonNumber"]        = title_episode_df["seasonNumber"].replace("\\N", -1)
-title_episode_df["episodeNumber"]        = title_episode_df["episodeNumber"].replace("\\N", -1)
+title_episode_df["seasonNumber"]  = title_episode_df["seasonNumber"].replace("\\N", -1)
+title_episode_df["episodeNumber"] = title_episode_df["episodeNumber"].replace("\\N", -1)
 
 
 

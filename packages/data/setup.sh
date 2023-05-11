@@ -42,13 +42,13 @@ fi
 #       echo "[setup]: Title principals already downloaded"
 #   fi
 
-if [ ! -s raw/name.basics.tsv ]
-then
-    echo "[setup]: Downloading name basics..."
-    wget -O - https://datasets.imdbws.com/name.basics.tsv.gz | gzip -d > raw/name.basics.tsv
-else
-    echo "[setup]: Name basics already downloaded"
-fi
+#   if [ ! -s raw/name.basics.tsv ]
+#   then
+#       echo "[setup]: Downloading name basics..."
+#       wget -O - https://datasets.imdbws.com/name.basics.tsv.gz | gzip -d > raw/name.basics.tsv
+#   else
+#       echo "[setup]: Name basics already downloaded"
+#   fi
 
 if [ ! -s processed/title.basics.tsv ]
 then
@@ -85,9 +85,9 @@ fi
 #        echo "[setup]: title.principals.tsv already processed"
 #   fi
 
-if [ ! -s processed/name.basics.tsv ]
-then
-    python3 scripts/p_name_basics.py
-else
-    echo "[setup]: title.name.tsv already processed"
-fi
+#   if [ ! -s processed/name.basics.tsv ]
+#   then
+#       python3 scripts/p_name_basics.py
+#   else
+#       echo "[setup]: title.name.tsv already processed"
+#   fi
