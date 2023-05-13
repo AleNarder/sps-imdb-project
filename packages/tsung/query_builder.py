@@ -3,7 +3,7 @@ import pandas as pd
 import random 
 
 #%%
-RATINGS_PATH = "../../data/processed/title.ratings.tsv"
+RATINGS_PATH = "../data/processed/title.ratings.tsv"
 
 #%%
 print("query-builder[title.ratings.tsv]: loading data...")
