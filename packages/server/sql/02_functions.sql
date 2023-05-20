@@ -196,6 +196,53 @@ begin
 
 end;
 $$;
+
+DROP FUNCTION imdb.get_title_full(text);
+
+create or replace function imdb.get_title_full(tconstvar text)
+returns table(tconst text, titletype text ,
+               primarytitle text , originaltitle text, isAdult boolean,
+               startyear int , endyear int , runtimeMinutes int, genres text,
+               averageRating float , numVotes int , prob float,
+               directors jsonb) --crew and writers if you want if you want
+language plpgsql as $$
+begin 
+   return query
+   select   b.tconst, b.titletype, b.primarytitle, 
+            b.originaltitle, b.isAdult, b.startyear,
+            b.endyear, b.runtimeminutes, b.genres,
+            r.averageRating, r.numVotes, r.prob , 
+            d.directors
+   from  imdb.title_basics b
+   right join  imdb.title_ratings r on b.tconst = r.tconst 
+   left join   (select  c.tconst ,
+                        jsonb_agg(n.*) as directors
+               from imdb.name_basics n 
+               left join   (select  v.tconst, -- getting directors for films with some info
+                                    n.nconst , 
+                                    n.primaryname
+                           from  
+                                 (select x.tconst , unnest(x.directors) 
+                                 from imdb.title_crew as x) 
+                                 as v(tconst, nconst)
+                           left join
+                                 (select y.nconst , y.primaryname
+                                 from imdb.name_basics y) 
+                                 as n(nconst , primaryname) 
+                           on  n.nconst = v.nconst
+                           )as c
+               on n.nconst = c.nconst
+               group by c.tconst
+               )as d
+   on d.tconst = r.tconst
+   where b.tconst = tconstvar
+   group by b.tconst, b.titletype, b.primarytitle, b.originaltitle, b.isAdult, b.startyear, b.endyear, b.runtimeminutes, b.genres,
+   r.averageRating, r.numVotes, r.prob ,
+   d.directors;
+   
+end;
+$$;
+
 --grant execute on function imdb.pgrst_watch() to web_anon;
 grant select on imdb.title_principals to web_anon;
 grant execute on function "imdb".get_basics_count() to web_anon;
@@ -207,3 +254,4 @@ grant execute on function "imdb".get_title_directors(tconstvar text) to web_anon
 grant execute on function "imdb".get_title_writers(tconstvar text) to web_anon;
 grant execute on function "imdb".get_title_crew(tconstvar text) to web_anon;
 grant execute on function "imdb".get_title_details(tconstvar text) to web_anon;
+grant execute on function "imdb".get_title_full(tconstvar text) to web_anon;
