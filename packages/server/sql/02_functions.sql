@@ -197,8 +197,6 @@ begin
 end;
 $$;
 
-DROP FUNCTION imdb.get_title_full(text);
-
 create or replace function imdb.get_title_full(tconstvar text)
 returns table(tconst text, titletype text ,
                primarytitle text , originaltitle text, isAdult boolean,
