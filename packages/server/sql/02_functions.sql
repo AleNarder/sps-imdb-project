@@ -14,7 +14,6 @@ CREATE EVENT TRIGGER pgrst_watch
   EXECUTE PROCEDURE pgrst_watch();
 
 -- Get Film's info by ID
-
 create or replace function imdb.get_title_details(tconstvar text)
 returns table(tconst text, titletype text ,
                primarytitle text, originaltitle text, isAdult boolean,
