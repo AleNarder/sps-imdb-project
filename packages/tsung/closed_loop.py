@@ -44,7 +44,7 @@ closed_loop = f'''<?xml version="1.0"?>
             <for from="1" to="10000" var="i">
                 <thinktime min="2" max="10" random="true"></thinktime>
                 <request subst="true">
-                    <http url="http://{ args.host }:{ args.port }/title_basics?tconst=eq.%%_id%%" method="GET"></http>
+                    <http url="http://{ args.host }:{ args.port }/rpc/get_title_details?tconstvar=%%_id%%" method="GET"></http>
                 </request>
             </for>
         </session>

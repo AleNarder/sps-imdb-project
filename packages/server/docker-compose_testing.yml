@@ -15,7 +15,8 @@ services:
     # Reources Limits
     mem_limit: 1024m
     mem_reservation: 64M
-    cpus: 0.25
+    cpuset: "0"
+    # cpus: 0.25
 
     ports:
     # Maps port 5433 on localhost to port 5432 of the container
@@ -43,7 +44,8 @@ services:
     # Resources Limits
     mem_limit: 1024m
     mem_reservation: 64M
-    cpus: 0.25
+    cpuset: "2"
+    # cpus: 0.25
 
     depends_on:
       - db
@@ -57,24 +59,10 @@ services:
     # Resources Limits
     mem_limit: 1024m
     mem_reservation: 64M
-    cpus: 0.25
+    cpuset: "4"
+    # cpus: 0.25
 
     ports:
       - "3000:80"
     depends_on:
       - db
-
-
-  swagger:
-    image: swaggerapi/swagger-ui
-
-    # Resources Limits
-    mem_limit: 64m
-    cpus: 0.05
-
-    ports:
-      - "3001:8080"
-    expose:
-      - "8080"
-    environment:
-      API_URL: http://localhost:3000/

@@ -6,7 +6,7 @@ tasks:
     desc: Process data 
 
     dir: packages/data
-    
+
     cmds:
       - docker build -f Dockerfile . -t sps-setup
       - |
@@ -14,17 +14,17 @@ tasks:
         --mount type=bind,source="$(pwd)/raw",target=/app/raw \
         --mount type=bind,source="$(pwd)/processed",target="/app/processed" \
         -it sps-setup:latest
-
+#-----------------------------------------------------------------------
   generate:tsung:query-set:
     
-    descr: Build the query set. Generate 10_000 random ids accordingly to the rating probability
+    descr: Build the query set. Generate 10_000 random ids according to the rating probability
 
     dir: packages/tsung
 
     cmds:
       - python3 query_builder.py
-
-  run:server:
+#-----------------------------------------------------------------------
+  run:server:development:
 
     desc: Runs the server stack
 
@@ -40,8 +40,26 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
     
     cmds:
-      - docker compose up --scale backend={{ .BACKEND_REPLICAS }}
-  
+      - docker compose -f docker-compose.yml up --scale backend={{ .BACKEND_REPLICAS }}
+#-----------------------------------------------------------------------
+  run:server:testing:
+
+    desc: Runs the server stack
+
+    dir: packages/server
+
+    vars:
+      BACKEND_REPLICAS: 1
+    
+    preconditions: 
+      - sh: test -f ../data/processed/title.basics.tsv
+        msg: MIGRATION DATA MISSING. Launch task in the terminal
+      - sh: test -f ../data/processed/title.ratings.tsv
+        msg: RATING DATA MISSING. Launch task in the terminal
+    
+    cmds:
+      - docker compose -f docker-compose_testing.yml up --scale backend={{ .BACKEND_REPLICAS }}
+#-----------------------------------------------------------------------
   run:tsung:closed-loop:
   
     desc: Perform tsung closed loop test
@@ -61,13 +79,12 @@ tasks:
 
     cmds:
       - python3 closed_loop.py --host {{.TSUNG_HOST}} --port {{.TSUNG_PORT}} | tsung -k -l {{ .TSUNG_LOG_DIR }} -f - start
-
-
+#-----------------------------------------------------------------------
   update:db-functions:
     cmds:
       - docker exec -it server-db-1 psql -U authenticator -d imdb -f ./sqlFiles/02_functions.sql
 
   update:db-views:
     cmds:
-      - docker exec -it server-db-1 psql -U authenticator -d imdb -f ./sqlFiles/01_views.sql    
+      - docker exec -it server-db-1 psql -U authenticator -d imdb -f ./sqlFiles/01_views.sql
 
