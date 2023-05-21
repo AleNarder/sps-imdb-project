@@ -181,7 +181,7 @@ begin
 end;
 $$;
 
-create or replace function imdb.get_title_details(tconstvar text)
+create or replace function imdb.get_title_details_2(tconstvar text)
 returns table(tconst text, titletype text ,
                primarytitle text , originaltitle text, isAdult boolean,
                startyear int , endyear int , runtimeMinutes int, genres text,
@@ -241,6 +241,27 @@ begin
 end;
 $$;
 
+DROP function imdb.get_title_details(text);
+create or replace function imdb.get_title_details(tconstvar text)
+returns table(tconst text, titletype text ,
+               primarytitle text , originaltitle text, isAdult boolean,
+               startyear int , endyear int , runtimeMinutes int, genres text,
+               averageRating float , numVotes int , prob float,
+               directors text[], writers text[]) --crew and writers if you want if you want
+language plpgsql as $$
+begin 
+   return query
+   select   b.tconst, b.titletype, b.primarytitle, b.originaltitle, 
+            b.isAdult, b.startyear, b.endyear, b.runtimeminutes, b.genres,
+            r.averageRating, r.numVotes, r.prob, 
+            c.directors , c.writers
+   from    imdb.title_basics b
+   right join imdb.title_ratings r on b.tconst = r.tconst
+   left join imdb.title_crew c on r.tconst = c.tconst
+   where b.tconst=tconstvar;            
+end;
+$$;
+
 --grant execute on function imdb.pgrst_watch() to web_anon;
 grant select on imdb.title_principals to web_anon;
 grant execute on function "imdb".get_basics_count() to web_anon;
@@ -253,3 +274,5 @@ grant execute on function "imdb".get_title_writers(tconstvar text) to web_anon;
 grant execute on function "imdb".get_title_crew(tconstvar text) to web_anon;
 grant execute on function "imdb".get_title_details(tconstvar text) to web_anon;
 grant execute on function "imdb".get_title_full(tconstvar text) to web_anon;
+grant execute on function "imdb".get_title_info(tconstvar text) to web_anon;
+
