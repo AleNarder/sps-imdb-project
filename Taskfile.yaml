@@ -67,7 +67,7 @@ tasks:
     dir: packages/tsung
     
     vars:
-      TSUNG_HOST: localhost
+      TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
       TSUNG_LOG_DIR: ./logs
 
