@@ -70,6 +70,11 @@ tasks:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
       TSUNG_LOG_DIR: ./logs
+      TSUNG_MAXUSERS: 8000
+      TSUNG_MAXDURATION: 17
+      TSUNG_ARRIVALPHASE_DURATION: 10
+      TSUNG_ARRIVALPHASE_RATE: 30
+      TSUNG_USER_REQUESTS: 1000
 
     preconditions:
       - sh: test -f queries.csv
@@ -78,7 +83,15 @@ tasks:
         msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server?
 
     cmds:
-      - python3 closed_loop.py --host {{.TSUNG_HOST}} --port {{.TSUNG_PORT}} | tsung -k -l {{ .TSUNG_LOG_DIR }} -f - start
+      - python3 closed_loop.py --host {{.TSUNG_HOST}}
+                               --port {{.TSUNG_PORT}}
+                               --maxusers {{.TSUNG_MAXUSERS}}
+                               --maxduration {{.TSUNG_MAXDURATION}}
+                               --arrivalduration {{.TSUNG_ARRIVALPHASE_DURATION}}
+                               --arrivalrate {{.TSUNG_ARRIVALPHASE_RATE}}
+                               --userequests {{.TSUNG_USER_REQUESTS}} > testing.xml
+
+      - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./testing.xml start
 #-----------------------------------------------------------------------
   update:db-functions:
     cmds:
