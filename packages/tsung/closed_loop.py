@@ -5,7 +5,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--host", help = "target host", required=True)
 parser.add_argument("-p", "--port", help = "target port", required=True)
 parser.add_argument("-u", "--maxusers", help = "maximum number of users in the system",
-                    required = False, default = 100)
+                    required = False, default = 100, type=int)
 parser.add_argument("-d", "--maxduration", help = "Maximum duration of the test",
                     required = True)
 parser.add_argument("-ad", "--arrivalduration", help = "Duration of only one arrival phase",
@@ -25,7 +25,7 @@ closed_loop = f'''<?xml version="1.0"?>
 
 <tsung loglevel="info">
     <clients>
-        <client host="localhost" use_controller_vm="true" maxusers="{ args.maxusers + 100 }"/>
+        <client host="localhost" use_controller_vm="true" maxusers="{ args.maxusers + 100}"/>
     </clients>
 
 
