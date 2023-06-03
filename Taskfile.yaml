@@ -70,11 +70,14 @@ tasks:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
       TSUNG_LOG_DIR: ./logs
-      TSUNG_MAXUSERS: 8000
+      TSUNG_MAXUSERS: 7500
       TSUNG_MAXDURATION: 18
       TSUNG_ARRIVALPHASE_DURATION: 13
       TSUNG_ARRIVALPHASE_RATE: 18
       TSUNG_USER_REQUESTS: 1000
+      FAST_QUERY: /title_details?tconst=eq.
+      SLOW_QUERY: /rpc/get_title_details?tconstvar=
+
 
     preconditions:
       - sh: test -f queries.csv
@@ -89,7 +92,8 @@ tasks:
                                --maxduration {{.TSUNG_MAXDURATION}}
                                --arrivalduration {{.TSUNG_ARRIVALPHASE_DURATION}}
                                --arrivalrate {{.TSUNG_ARRIVALPHASE_RATE}}
-                               --userequests {{.TSUNG_USER_REQUESTS}} > testing.xml
+                               --userequests {{.TSUNG_USER_REQUESTS}}
+                               --query {{.FAST_QUERY}} > testing.xml
 
       - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./testing.xml start
 #-----------------------------------------------------------------------

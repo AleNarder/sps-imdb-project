@@ -14,6 +14,8 @@ parser.add_argument("-ar", "--arrivalrate", help = "Rate of requests sent to the
                     required = True)
 parser.add_argument("-ur", "--userequests", help = "Maximum number of requests per user",
                     required = False, default = 1000)
+parser.add_argument("-q", "--query", help = "Query to be executed by the Database",
+                    required = True)
 
 
 args = parser.parse_args()
@@ -58,7 +60,7 @@ closed_loop = f'''<?xml version="1.0"?>
             <for from="1" to="{ args.userequests }" var="i">
                 <thinktime min="1" max="5" random="true"></thinktime>
                 <request subst="true">
-                    <http url="http://{ args.host }:{ args.port }/rpc/get_title_details?tconstvar=%%_id%%" method="GET"></http>
+                    <http url="http://{ args.host }:{ args.port }{ args.query }%%_id%%" method="GET"></http>
                 </request>
             </for>
         </session>
