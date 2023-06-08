@@ -4,13 +4,9 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("-t", "--host", help = "target host", required=True)
 parser.add_argument("-p", "--port", help = "target port", required=True)
-parser.add_argument("-u", "--maxusers", help = "maximum number of users in the system",
-                    required = False, default = 100, type=int)
 parser.add_argument("-d", "--maxduration", help = "Maximum duration of the test",
                     required = True)
 parser.add_argument("-ad", "--arrivalduration", help = "Duration of only one arrival phase",
-                    required = True)
-parser.add_argument("-ar", "--arrivalrate", help = "Rate of requests sent to the server per second",
                     required = True)
 parser.add_argument("-ur", "--userequests", help = "Maximum number of requests per user",
                     required = False, default = 1000)
@@ -27,9 +23,8 @@ closed_loop = f'''<?xml version="1.0"?>
 
 <tsung loglevel="info">
     <clients>
-        <client host="localhost" use_controller_vm="true" maxusers="{ args.maxusers + 100}"/>
+        <client host="localhost" use_controller_vm="true"/>
     </clients>
-
 
     <servers>
         <server host="{ args.host }" port="{ args.port }" type="tcp"></server>
@@ -42,7 +37,7 @@ closed_loop = f'''<?xml version="1.0"?>
     
     <load duration="{ args.maxduration }" unit="minute">
         <arrivalphase phase="1" duration="{ args.arrivalduration }" unit="minute" wait_all_sessions_end="true">
-            <users maxnumber="{ args.maxusers }" arrivalrate="{ args.arrivalrate }" unit="second"></users>
+            <users maxnumber="1" arrivalrate="1" unit="second"></users>
         </arrivalphase>
     </load>
 
@@ -51,17 +46,22 @@ closed_loop = f'''<?xml version="1.0"?>
     </options>
 
     <sessions>
-        <session probability="100" name="closed_loop_test" type="ts_http">
-
-            <setdynvars sourcetype="file" fileid="queries" order="iter" delimiter=";">
-                <var name="id" />
-            </setdynvars>
+        <session probability="100" name="single_user_testing" type="ts_http">
 
             <for from="1" to="{ args.userequests }" var="i">
-                <thinktime min="1" max="5" random="true"></thinktime>
-                <request subst="true">
+
+                <setdynvars sourcetype="file" fileid="queries" order="iter" delimiter=";">
+                    <var name="id" />
+                </setdynvars>
+
+                <thinktime min="1" max="5" random="true"/>
+
+                <!-- Transaction to avoid inserting the connection time in the transaction-mean computation -->
+                <transaction name="query">
+                    <!-- Execute Request -->
                     <http url="http://{ args.host }:{ args.port }{ args.query }%%_id%%" method="GET"></http>
-                </request>
+                </transaction>
+
             </for>
         </session>
     </sessions>

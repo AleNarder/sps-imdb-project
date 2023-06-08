@@ -24,9 +24,9 @@ tasks:
     cmds:
       - python3 query_builder.py
 #-----------------------------------------------------------------------
-  run:server:development:
+  build:server:development:
 
-    desc: Runs the server stack
+    desc: Runs the server stack in development mode
 
     dir: packages/server
 
@@ -42,9 +42,9 @@ tasks:
     cmds:
       - docker compose -f docker-compose.yml up --scale backend={{ .BACKEND_REPLICAS }}
 #-----------------------------------------------------------------------
-  run:server:testing:
+  build:server:testing:
 
-    desc: Runs the server stack
+    desc: Runs the server stack in testing mode
 
     dir: packages/server
 
@@ -60,9 +60,9 @@ tasks:
     cmds:
       - docker compose -f docker-compose_testing.yml up --scale backend={{ .BACKEND_REPLICAS }}
 #-----------------------------------------------------------------------
-  run:tsung:closed-loop:
-  
-    desc: Perform tsung closed loop test
+  run:tsung:bottleneck_test:
+
+    desc: Perform tsung closed-loop test
 
     dir: packages/tsung
     
@@ -78,24 +78,87 @@ tasks:
       FAST_QUERY: /title_details?tconst=eq.
       SLOW_QUERY: /rpc/get_title_details?tconstvar=
 
-
     preconditions:
       - sh: test -f queries.csv
         msg: "QUERY SET MISSING. Generate it with task generate:tsung:query-set"
       - sh:  test ! -z "$(curl -Is http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}} | head -1)"
-        msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server?
+        msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server:development or run:server:testing?
 
     cmds:
-      - python3 closed_loop.py --host {{.TSUNG_HOST}}
+      - python3 tsung_config.py --host {{.TSUNG_HOST}}
                                --port {{.TSUNG_PORT}}
                                --maxusers {{.TSUNG_MAXUSERS}}
                                --maxduration {{.TSUNG_MAXDURATION}}
                                --arrivalduration {{.TSUNG_ARRIVALPHASE_DURATION}}
                                --arrivalrate {{.TSUNG_ARRIVALPHASE_RATE}}
                                --userequests {{.TSUNG_USER_REQUESTS}}
-                               --query {{.FAST_QUERY}} > testing.xml
+                               --query {{.FAST_QUERY}} > tsung_config.xml
 
-      - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./testing.xml start
+      - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config.xml start
+#-----------------------------------------------------------------------
+  run:tsung:db_test:
+  
+    desc: Perform a single-user tsung closed-loop test against Postregresql DB
+
+    dir: packages/tsung
+
+    vars:
+      TSUNG_HOST: 192.168.1.18
+      TSUNG_PORT: 5433
+      TSUNG_LOG_DIR: ./db_logs
+      TSUNG_MAXUSERS: 1
+      TSUNG_MAXDURATION: 7
+      TSUNG_ARRIVALPHASE_DURATION: 5
+      TSUNG_ARRIVALPHASE_RATE: 1
+      TSUNG_USER_REQUESTS: 10000
+
+    preconditions:
+      - sh: test -f queries.csv
+        msg: "QUERY SET MISSING. Generate it with task generate:tsung:query-set"
+      - sh:  test ! -z "$(curl -Is http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}} | head -1)"
+        msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server:development or run:server:testing?
+
+    cmds:
+      - python3 tsung_config_db.py --host {{.TSUNG_HOST}}
+                               --port {{.TSUNG_PORT}}
+                               --maxusers {{.TSUNG_MAXUSERS}}
+                               --maxduration {{.TSUNG_MAXDURATION}}
+                               --arrivalduration {{.TSUNG_ARRIVALPHASE_DURATION}}
+                               --arrivalrate {{.TSUNG_ARRIVALPHASE_RATE}}
+                               --userequests {{.TSUNG_USER_REQUESTS}}
+
+      - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_db.xml start
+#-----------------------------------------------------------------------
+  run:tsung:1u_test:
+  
+    desc: Perform a single-user tsung closed-loop test
+    dir: packages/tsung
+
+    vars:
+      TSUNG_HOST: 192.168.1.18
+      TSUNG_PORT: 3000
+      TSUNG_LOG_DIR: ./1u_logs
+      TSUNG_MAXDURATION: 7
+      TSUNG_ARRIVALPHASE_DURATION: 5
+      TSUNG_USER_REQUESTS: 10000
+      FAST_QUERY: /title_details?tconst=eq.
+      SLOW_QUERY: /rpc/get_title_details?tconstvar=
+
+    preconditions:
+      - sh: test -f queries.csv
+        msg: "QUERY SET MISSING. Generate it with task generate:tsung:query-set"
+      - sh:  test ! -z "$(curl -Is http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}} | head -1)"
+        msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server:development or run:server:testing?
+
+    cmds:
+      - python3 tsung_config_1u_DB.py --host {{.TSUNG_HOST}}
+                               --port {{.TSUNG_PORT}}
+                               --maxduration {{.TSUNG_MAXDURATION}}
+                               --arrivalduration {{.TSUNG_ARRIVALPHASE_DURATION}}
+                               --userequests {{.TSUNG_USER_REQUESTS}}
+                               --query {{.FAST_QUERY}} > tsung_config_1u.xml
+
+      - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_1u.xml start
 #-----------------------------------------------------------------------
   update:db-functions:
     cmds:

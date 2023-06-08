@@ -11,6 +11,7 @@ services:
       POSTGRES_DB: imdb
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
+      POSTGRES_HOST_AUTH_METHOD: trust
 
     # Reources Limits
     mem_limit: 1024m
@@ -31,6 +32,8 @@ services:
       - ../data/processed/title.episode.tsv:/data/title.episode.tsv
       # - ../data/processed/title.principals.tsv:/data/title.principals.tsv
       # - ../data/processed/name.basics.tsv:/data/name.basics.tsv
+      - ./sql/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./sql/logs/:/var/lib/postgresql/data/logs/
 
 
   backend:
