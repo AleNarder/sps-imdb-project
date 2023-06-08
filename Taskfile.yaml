@@ -125,7 +125,7 @@ tasks:
                                --maxduration {{.TSUNG_MAXDURATION}}
                                --arrivalduration {{.TSUNG_ARRIVALPHASE_DURATION}}
                                --arrivalrate {{.TSUNG_ARRIVALPHASE_RATE}}
-                               --userequests {{.TSUNG_USER_REQUESTS}}
+                               --userequests {{.TSUNG_USER_REQUESTS}} > tsung_config_db.xml
 
       - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_db.xml start
 #-----------------------------------------------------------------------
@@ -151,7 +151,7 @@ tasks:
         msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server:development or run:server:testing?
 
     cmds:
-      - python3 tsung_config_1u_DB.py --host {{.TSUNG_HOST}}
+      - python3 tsung_config_1u.py --host {{.TSUNG_HOST}}
                                --port {{.TSUNG_PORT}}
                                --maxduration {{.TSUNG_MAXDURATION}}
                                --arrivalduration {{.TSUNG_ARRIVALPHASE_DURATION}}
