@@ -59,7 +59,9 @@ closed_loop = f'''<?xml version="1.0"?>
                 <!-- Transaction to avoid inserting the connection time in the transaction-mean computation -->
                 <transaction name="query">
                     <!-- Execute Request -->
-                    <http url="http://{ args.host }:{ args.port }{ args.query }%%_id%%" method="GET"></http>
+                    <request subst="true">
+                        <http url="http://{ args.host }:{ args.port }{ args.query }%%_id%%" method="GET"></http>
+                    </request>
                 </transaction>
 
             </for>
