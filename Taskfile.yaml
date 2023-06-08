@@ -115,8 +115,6 @@ tasks:
     preconditions:
       - sh: test -f queries.csv
         msg: "QUERY SET MISSING. Generate it with task generate:tsung:query-set"
-      - sh:  test ! -z "$(curl -Is http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}} | head -1)"
-        msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server:development or run:server:testing?
 
     cmds:
       - python3 tsung_config_db.py --host {{.TSUNG_HOST}}
