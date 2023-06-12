@@ -107,10 +107,10 @@ tasks:
       TSUNG_PORT: 5433
       TSUNG_LOG_DIR: ./logs/db_logs
       TSUNG_MAXUSERS: 1
-      TSUNG_MAXDURATION: 7
-      TSUNG_ARRIVALPHASE_DURATION: 5
+      TSUNG_MAXDURATION: 5
+      TSUNG_ARRIVALPHASE_DURATION: 1
       TSUNG_ARRIVALPHASE_RATE: 1
-      TSUNG_USER_REQUESTS: 10000
+      TSUNG_USER_REQUESTS: 1000
 
     preconditions:
       - sh: test -f queries.csv
@@ -125,7 +125,7 @@ tasks:
                                --arrivalrate {{.TSUNG_ARRIVALPHASE_RATE}}
                                --userequests {{.TSUNG_USER_REQUESTS}} > tsung_config_db.xml
 
-      - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_db.xml start
+      - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_db.xml start
 #-----------------------------------------------------------------------
   run:tsung:1u_test:
   
@@ -136,9 +136,9 @@ tasks:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
       TSUNG_LOG_DIR: ./logs/1u_logs
-      TSUNG_MAXDURATION: 7
-      TSUNG_ARRIVALPHASE_DURATION: 5
-      TSUNG_USER_REQUESTS: 10000
+      TSUNG_MAXDURATION: 5
+      TSUNG_ARRIVALPHASE_DURATION: 1
+      TSUNG_USER_REQUESTS: 1000
       FAST_QUERY: /title_details?tconst=eq.
       SLOW_QUERY: /rpc/get_title_details?tconstvar=
 
@@ -156,7 +156,7 @@ tasks:
                                --userequests {{.TSUNG_USER_REQUESTS}}
                                --query {{.FAST_QUERY}} > tsung_config_1u.xml
 
-      - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_1u.xml start
+      - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_1u.xml start
 #-----------------------------------------------------------------------
   update:db-functions:
     cmds:

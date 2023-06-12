@@ -32,6 +32,7 @@ services:
       # - ../data/processed/title.principals.tsv:/data/title.principals.tsv
       # - ../data/processed/name.basics.tsv:/data/name.basics.tsv
       # - ./sql/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      # - ./sql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       # - ./sql/logs/:/var/lib/postgresql/data/logs/
 
 

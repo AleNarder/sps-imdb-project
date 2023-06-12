@@ -54,7 +54,7 @@ closed_loop = f'''<?xml version="1.0"?>
                     <var name="id" />
                 </setdynvars>
 
-                <thinktime min="1" max="5" random="true"/>
+                <thinktime value="0.2" random="true"/>
 
                 <!-- Transaction to avoid inserting the connection time in the transaction-mean computation -->
                 <transaction name="query">
