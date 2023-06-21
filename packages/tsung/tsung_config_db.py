@@ -1,4 +1,5 @@
 import argparse
+import platform
 
 parser = argparse.ArgumentParser()
 
@@ -18,14 +19,19 @@ parser.add_argument("-ur", "--userequests", help = "Maximum number of requests p
 
 args = parser.parse_args()
 
+if platform.system() == 'Darwin':
+    dtd_file = '/usr/local/Cellar/tsung/1.8.0/share/tsung/tsung-1.0.dtd'
+elif platform.system() == 'Linux':
+    dtd_file = '/usr/share/tsung/tsung-1.0.dtd'
+
 closed_loop = f'''<?xml version="1.0"?>
-<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" []>
+<!DOCTYPE tsung SYSTEM "{ dtd_file }" []>
 
 <!-- CLOSED LOOP TEMPLATE -->
 
 <tsung loglevel="info">
     <clients>
-        <client host="localhost" use_controller_vm="true" maxusers="{ args.maxusers + 50 }"/>
+        <client host="localhost" use_controller_vm="true" maxusers="{ args.maxusers + 10 }"/>
     </clients>
 
     <servers>
@@ -62,15 +68,13 @@ closed_loop = f'''<?xml version="1.0"?>
 
 
             <!-- Thinking Time -->
-            <thinktime value="2"/>
+            <thinktime value="20" random="true"></thinktime>
 
             <for from="1" to="{ args.userequests }" var="i">
 
-                <setdynvars sourcetype="file" fileid="queries" order="iter" delimiter=";">
+                <setdynvars sourcetype="file" fileid="queries" order="random" delimiter=";">
                     <var name="id" />
                 </setdynvars>
-
-                <thinktime value="0.2" random="true"/>
 
                 <!-- Transaction to avoid inserting the connection time in the transaction-mean computation -->
                 <transaction name="query">

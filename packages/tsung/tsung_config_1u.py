@@ -1,4 +1,5 @@
 import argparse
+import platform
 
 parser = argparse.ArgumentParser()
 
@@ -16,8 +17,13 @@ parser.add_argument("-q", "--query", help = "Query to be executed by the Databas
 
 args = parser.parse_args()
 
+if platform.system() == 'Darwin':
+    dtd_file = '/usr/local/Cellar/tsung/1.8.0/share/tsung/tsung-1.0.dtd'
+elif platform.system() == 'Linux':
+    dtd_file = '/usr/share/tsung/tsung-1.0.dtd'
+
 closed_loop = f'''<?xml version="1.0"?>
-<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" []>
+<!DOCTYPE tsung SYSTEM "{ dtd_file }" []>
 
 <!-- CLOSED LOOP TEMPLATE -->
 
@@ -50,11 +56,9 @@ closed_loop = f'''<?xml version="1.0"?>
 
             <for from="1" to="{ args.userequests }" var="i">
 
-                <setdynvars sourcetype="file" fileid="queries" order="iter" delimiter=";">
+                <setdynvars sourcetype="file" fileid="queries" order="random" delimiter=";">
                     <var name="id" />
                 </setdynvars>
-
-                <thinktime value="0.2" random="true"/>
 
                 <!-- Transaction to avoid inserting the connection time in the transaction-mean computation -->
                 <transaction name="query">
