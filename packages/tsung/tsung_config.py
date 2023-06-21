@@ -65,8 +65,10 @@ closed_loop = f'''<?xml version="1.0"?>
                     <var name="id" />
                 </setdynvars>
 
+                <!--
                 <thinktime min="1" max="5" random="true"></thinktime>
-                
+                -->
+
                 <request subst="true">
                     <http url="http://{ args.host }:{ args.port }{ args.query }%%_id%%" method="GET"></http>
                 </request>
