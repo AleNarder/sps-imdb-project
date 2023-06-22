@@ -41,6 +41,7 @@ services:
     image: postgrest/postgrest
 
     environment:
+      PGRST_SERVER_PORT: 3001
       PGRST_DB_URI: postgres://authenticator:sps@db:5432/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
@@ -51,8 +52,8 @@ services:
     cpuset: "2"
     # cpus: 0.25
 
-    # ports:
-    #   - "3000:3000"
+    ports:
+      - "3001:3001"
 
     depends_on:
       - db

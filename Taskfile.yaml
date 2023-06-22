@@ -62,7 +62,8 @@ tasks:
 #-----------------------------------------------------------------------
   build:server:test_dispatching:
 
-    desc: Runs the server stack in testing mode
+    desc: Runs the server stack in testing mode with containerised replicas 
+          of the Backend (PostGREST) and the DataBase (PostgreSQL) services
 
     dir: packages/server
 
@@ -80,14 +81,14 @@ tasks:
 #-----------------------------------------------------------------------
   run:tsung:bottleneck_test:
 
-    desc: Perform tsung closed-loop test
+    desc: Perform tsung closed-loop stress test to find the System Bottleneck
 
     dir: packages/tsung
     
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
-      TSUNG_LOG_DIR: ./logs
+      TSUNG_LOG_DIR: ./logs/bottleneck_logs
       TSUNG_MAXUSERS: 5
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
@@ -116,7 +117,7 @@ tasks:
 #-----------------------------------------------------------------------
   run:tsung:db_test:
   
-    desc: Perform a single-user tsung closed-loop test against Postregresql DB
+    desc: Perform a single-user tsung closed-loop test against PostregreSQL DB
 
     dir: packages/tsung
 
@@ -145,15 +146,48 @@ tasks:
 
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_db.xml start
 #-----------------------------------------------------------------------
-  run:tsung:1u_test:
+  run:tsung:be+db_test(1_user):
   
-    desc: Perform a single-user tsung closed-loop test
+    desc: Perform a single-user tsung closed-loop test against
+          PostGREST backend service and PostgreSQL DB
+    dir: packages/tsung
+
+    vars:
+      TSUNG_HOST: 192.168.1.18
+      TSUNG_PORT: 3001
+      TSUNG_LOG_DIR: ./logs/1u_logs/be_DB
+      TSUNG_MAXDURATION: 10
+      TSUNG_ARRIVALPHASE_DURATION: 1
+      TSUNG_USER_REQUESTS: 50000
+      FAST_QUERY: /title_details?tconst=eq.
+      SLOW_QUERY: /rpc/get_title_details?tconstvar=
+
+    preconditions:
+      - sh: test -f queries.csv
+        msg: "QUERY SET MISSING. Generate it with task generate:tsung:query-set"
+      - sh:  test ! -z "$(curl -Is http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}} | head -1)"
+        msg: SUT (http://{{.TSUNG_HOST}}:{{.TSUNG_PORT}}) IS NOT REACHABLE. Have you run task run:server:development or run:server:testing?
+
+    cmds:
+      - python3 tsung_config_1u.py --host {{.TSUNG_HOST}}
+                               --port {{.TSUNG_PORT}}
+                               --maxduration {{.TSUNG_MAXDURATION}}
+                               --arrivalduration {{.TSUNG_ARRIVALPHASE_DURATION}}
+                               --userequests {{.TSUNG_USER_REQUESTS}}
+                               --query {{.FAST_QUERY}} > tsung_config_1u.xml
+
+      - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_1u.xml start
+#-----------------------------------------------------------------------
+  run:tsung:rp+be+db_test(1_user):
+  
+    desc: Perform a single-user tsung closed-loop test against
+          NGINX reverse proxy, PostGREST backend service and PostgreSQL DB
     dir: packages/tsung
 
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
-      TSUNG_LOG_DIR: ./logs/1u_logs
+      TSUNG_LOG_DIR: ./logs/1u_logs/rp_be_DB
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
       TSUNG_USER_REQUESTS: 50000
