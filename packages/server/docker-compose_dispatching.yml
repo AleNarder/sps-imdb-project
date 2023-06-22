@@ -8,7 +8,7 @@ services:
     image: postgres
 
     environment:
-      PGPORT: 5432
+      PGPORT: 5433
       POSTGRES_DB: imdb
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
@@ -17,12 +17,12 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64m
-    # cpuset: "0"
+    cpuset: "0"
     # cpus: 0.25
   
     ports:
     # Maps port 5433 on localhost to port 5432 of the container
-      - "5433:5432"
+      - "5433:5433"
 
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
@@ -45,7 +45,7 @@ services:
     # Reources Limits
     mem_limit: 128m
     mem_reservation: 64m
-    # cpuset: "2"
+    cpuset: "1"
     # cpus: 0.25
   
     ports:
@@ -73,7 +73,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64m
-    # cpuset: "4"
+    cpuset: "2"
     # cpus: 0.25
 
     expose:
@@ -94,7 +94,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64M
-    # cpuset: "6"
+    cpuset: "3"
     # cpus: 0.25
 
     expose:
@@ -112,7 +112,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64m
-    # cpuset: "8"
+    cpuset: "4"
     # cpus: 0.25
 
     ports:
