@@ -8,7 +8,7 @@ services:
     image: postgres
 
     environment:
-      PGPORT: 5433
+      PGPORT: 5432
       POSTGRES_DB: imdb
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
@@ -22,7 +22,7 @@ services:
   
     ports:
     # Maps port 5433 on localhost to port 5432 of the container
-      - "5433:5433"
+      - "5433:5432"
 
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
