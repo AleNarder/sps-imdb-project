@@ -58,7 +58,7 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
     
     cmds:
-      - docker compose -f docker-compose_testing.yml up
+      - docker compose -f docker-compose_testing_128.yml up
 #-----------------------------------------------------------------------
   build:server:test_dispatching:
 
