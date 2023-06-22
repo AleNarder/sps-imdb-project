@@ -89,9 +89,9 @@ tasks:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
       TSUNG_LOG_DIR: ./logs/bottleneck_logs
-      TSUNG_MAXUSERS: 5
-      TSUNG_MAXDURATION: 10
-      TSUNG_ARRIVALPHASE_DURATION: 1
+      TSUNG_MAXUSERS: 300
+      TSUNG_MAXDURATION: 15
+      TSUNG_ARRIVALPHASE_DURATION: 7
       TSUNG_ARRIVALPHASE_RATE: 1
       TSUNG_USER_REQUESTS: 10000
       FAST_QUERY: /title_details?tconst=eq.
@@ -146,7 +146,7 @@ tasks:
 
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_db.xml start
 #-----------------------------------------------------------------------
-  run:tsung:be+db_test(1_user):
+  run:tsung:be+db_test:
   
     desc: Perform a single-user tsung closed-loop test against
           PostGREST backend service and PostgreSQL DB
@@ -155,7 +155,7 @@ tasks:
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3001
-      TSUNG_LOG_DIR: ./logs/1u_logs/be_DB
+      TSUNG_LOG_DIR: ./logs/1u_logs/be_db
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
       TSUNG_USER_REQUESTS: 50000
@@ -178,7 +178,7 @@ tasks:
 
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_1u.xml start
 #-----------------------------------------------------------------------
-  run:tsung:rp+be+db_test(1_user):
+  run:tsung:rp+be+db_test:
   
     desc: Perform a single-user tsung closed-loop test against
           NGINX reverse proxy, PostGREST backend service and PostgreSQL DB
@@ -187,7 +187,7 @@ tasks:
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
-      TSUNG_LOG_DIR: ./logs/1u_logs/rp_be_DB
+      TSUNG_LOG_DIR: ./logs/1u_logs/rp_be_db
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
       TSUNG_USER_REQUESTS: 50000
