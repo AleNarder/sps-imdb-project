@@ -17,7 +17,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64m
-    cpuset: "0"
+    # cpuset: "0"
     # cpus: 0.25
   
     ports:
@@ -45,7 +45,7 @@ services:
     # Reources Limits
     mem_limit: 128m
     mem_reservation: 64m
-    cpuset: "2"
+    # cpuset: "2"
     # cpus: 0.25
   
     ports:
@@ -73,7 +73,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64m
-    cpuset: "4"
+    # cpuset: "4"
     # cpus: 0.25
 
     expose:
@@ -94,7 +94,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64M
-    cpuset: "6"
+    # cpuset: "6"
     # cpus: 0.25
 
     expose:
@@ -112,7 +112,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64m
-    cpuset: "8"
+    # cpuset: "8"
     # cpus: 0.25
 
     ports:
