@@ -40,7 +40,7 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
     
     cmds:
-      - docker compose -f docker-compose.yml up --scale backend={{ .BACKEND_REPLICAS }}
+      - docker compose -f docker-compose.yml up
 #-----------------------------------------------------------------------
   build:server:testing:
 
@@ -58,7 +58,25 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
     
     cmds:
-      - docker compose -f docker-compose_testing.yml up --scale backend={{ .BACKEND_REPLICAS }}
+      - docker compose -f docker-compose_testing.yml up
+#-----------------------------------------------------------------------
+  build:server:test_dispatching:
+
+    desc: Runs the server stack in testing mode
+
+    dir: packages/server
+
+    vars:
+      BACKEND_REPLICAS: 1
+    
+    preconditions: 
+      - sh: test -f ../data/processed/title.basics.tsv
+        msg: MIGRATION DATA MISSING. Launch task in the terminal
+      - sh: test -f ../data/processed/title.ratings.tsv
+        msg: RATING DATA MISSING. Launch task in the terminal
+    
+    cmds:
+      - docker compose -f docker-compose_dispatching.yml up
 #-----------------------------------------------------------------------
   run:tsung:bottleneck_test:
 
@@ -94,7 +112,7 @@ tasks:
                                --userequests {{.TSUNG_USER_REQUESTS}}
                                --query {{.FAST_QUERY}} > tsung_config.xml
 
-      - tsung -k -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config.xml start
+      - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config.xml start
 #-----------------------------------------------------------------------
   run:tsung:db_test:
   
