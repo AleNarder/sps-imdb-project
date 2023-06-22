@@ -58,7 +58,7 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
     
     cmds:
-      - docker compose -f docker-compose_testing.yml up
+      - docker compose -f docker-compose_testing_128.yml up
 #-----------------------------------------------------------------------
   build:server:test_dispatching:
 
@@ -79,7 +79,7 @@ tasks:
     cmds:
       - docker compose -f docker-compose_dispatching.yml up
 #-----------------------------------------------------------------------
-  run:tsung:bottleneck_test:
+  run:tsung:bottleneck_test_128:
 
     desc: Perform tsung closed-loop stress test to find the System Bottleneck
 

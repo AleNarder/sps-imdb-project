@@ -1,0 +1,122 @@
+# CONFIGURATION FOR DISPATCHING ANALYSIS
+
+version: '2.4'
+
+services:
+
+  db_1:
+    image: postgres
+
+    environment:
+      PGPORT: 5432
+      POSTGRES_DB: imdb
+      POSTGRES_USER: authenticator
+      POSTGRES_PASSWORD: sps
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+    # Resources Limits
+    mem_limit: 128m
+    mem_reservation: 64m
+    cpuset: "0"
+    # cpus: 0.25
+  
+    ports:
+    # Maps port 5433 on localhost to port 5432 of the container
+      - "5433:5432"
+
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
+      - ./sql/:/sqlFiles/
+      - ../data/processed/title.basics.tsv:/data/title.basics.tsv
+      - ../data/processed/title.ratings.tsv:/data/title.ratings.tsv
+      - ../data/processed/title.crew.tsv:/data/title.crew.tsv
+      - ../data/processed/title.episode.tsv:/data/title.episode.tsv
+    
+  db_2:
+    image: postgres
+
+    environment:
+      PGPORT: 5434
+      POSTGRES_DB: imdb
+      POSTGRES_USER: authenticator
+      POSTGRES_PASSWORD: sps
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+    # Reources Limits
+    mem_limit: 128m
+    mem_reservation: 64m
+    cpuset: "2"
+    # cpus: 0.25
+  
+    ports:
+    # Maps port 5433 on localhost to port 5432 of the container
+      - "5434:5434"
+
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
+      - ./sql/:/sqlFiles/
+      - ../data/processed/title.basics.tsv:/data/title.basics.tsv
+      - ../data/processed/title.ratings.tsv:/data/title.ratings.tsv
+      - ../data/processed/title.crew.tsv:/data/title.crew.tsv
+      - ../data/processed/title.episode.tsv:/data/title.episode.tsv
+
+
+  backend_1:
+    image: postgrest/postgrest
+
+    environment:
+      PGRST_SERVER_PORT: 3001
+      PGRST_DB_URI: postgres://authenticator:sps@db_1:5433/imdb
+      PGRST_DB_SCHEMAS: "imdb"
+      PGRST_DB_ANON_ROLE: "web_anon"
+
+    # Resources Limits
+    mem_limit: 128m
+    mem_reservation: 64m
+    cpuset: "4"
+    # cpus: 0.25
+
+    expose:
+      - "3001:3001"
+
+    depends_on:
+      - db_1
+
+  backend_2:
+    image: postgrest/postgrest
+
+    environment:
+      PGRST_SERVER_PORT: 3002
+      PGRST_DB_URI: postgres://authenticator:sps@db_2:5434/imdb
+      PGRST_DB_SCHEMAS: "imdb"
+      PGRST_DB_ANON_ROLE: "web_anon"
+
+    # Resources Limits
+    mem_limit: 128m
+    mem_reservation: 64M
+    cpuset: "6"
+    # cpus: 0.25
+
+    expose:
+      - "3002:3002"
+
+    depends_on:
+      - db_2
+
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx_dispatching_roundr.conf:/etc/nginx/nginx.conf:ro
+
+    # Resources Limits
+    mem_limit: 128m
+    mem_reservation: 64m
+    cpuset: "8"
+    # cpus: 0.25
+
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend_1
+      - backend_2
