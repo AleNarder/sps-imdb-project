@@ -107,7 +107,7 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./nginx/nginx_dispatching.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx_dispatching_random.conf:/etc/nginx/nginx.conf:ro
 
     # Resources Limits
     mem_limit: 128m
