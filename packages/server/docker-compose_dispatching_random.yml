@@ -18,7 +18,7 @@ services:
     cpuset: "0"
     ports:
     # Maps port 5432 on localhost to port 5432 of the container
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - ./sql/:/sqlFiles/
@@ -30,7 +30,7 @@ services:
   db_2:
     image: postgres
     environment:
-      PGPORT: 5433
+      PGPORT: 5434
       POSTGRES_DB: imdb
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
@@ -41,7 +41,7 @@ services:
     cpuset: "1"
     ports:
     # Maps port 5433 on localhost to port 5432 of the container
-      - "5433:5433"
+      - "5435:5434"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - ./sql/:/sqlFiles/
@@ -72,7 +72,7 @@ services:
     image: postgrest/postgrest
     environment:
       PGRST_SERVER_PORT: 3002
-      PGRST_DB_URI: postgres://authenticator:sps@db_2:5433/imdb
+      PGRST_DB_URI: postgres://authenticator:sps@db_2:5434/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
     # Resources Limits
