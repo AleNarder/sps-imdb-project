@@ -29,9 +29,6 @@ tasks:
     desc: Runs the server stack in development mode
 
     dir: packages/server
-
-    vars:
-      BACKEND_REPLICAS: 1
     
     preconditions: 
       - sh: test -f ../data/processed/title.basics.tsv
@@ -47,9 +44,6 @@ tasks:
     desc: Runs the server stack in testing mode
 
     dir: packages/server
-
-    vars:
-      BACKEND_REPLICAS: 1
     
     preconditions: 
       - sh: test -f ../data/processed/title.basics.tsv
@@ -60,15 +54,26 @@ tasks:
     cmds:
       - docker compose -f docker-compose_testing_128.yml up
 #-----------------------------------------------------------------------
+  build:server:test_scaled:
+    desc: Runs the server stack in testing mode
+
+    dir: packages/server
+    
+    preconditions: 
+      - sh: test -f ../data/processed/title.basics.tsv
+        msg: MIGRATION DATA MISSING. Launch task in the terminal
+      - sh: test -f ../data/processed/title.ratings.tsv
+        msg: RATING DATA MISSING. Launch task in the terminal
+    cmds:
+      - docker compose -f docker-compose_testing_128.yml up --detach --scale db=2  
+      - docker update server-db-2 --cpuset-cpus 1
+#------------------------------------------------------------------------
   build:server:test_dispatching:
 
     desc: Runs the server stack in testing mode with containerised replicas 
           of the Backend (PostGREST) and the DataBase (PostgreSQL) services
 
     dir: packages/server
-
-    vars:
-      BACKEND_REPLICAS: 1
     
     preconditions: 
       - sh: test -f ../data/processed/title.basics.tsv

@@ -20,8 +20,7 @@ services:
     # cpus: 0.25
 
     ports:
-    # Maps port 5433 on localhost to port 5432 of the container
-      - "5433:5432"
+      - "5432"
 
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
@@ -67,7 +66,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64M
-    cpuset: "4"
+    cpuset: "3"
     # cpus: 0.25
 
     ports:

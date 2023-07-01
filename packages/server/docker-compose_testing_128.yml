@@ -20,9 +20,7 @@ services:
     # cpus: 0.25
 
     ports:
-    # Maps port 5433 on localhost to port 5432 of the container
-      - "5433:5432"
-
+      - "5432"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - ./sql/:/sqlFiles/
@@ -33,7 +31,7 @@ services:
       # - ../data/processed/title.principals.tsv:/data/title.principals.tsv
       # - ../data/processed/name.basics.tsv:/data/name.basics.tsv
       # - ./sql/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./sql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      #- ./sql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       # - ./sql/logs/:/var/lib/postgresql/data/logs/
 
 
@@ -67,7 +65,7 @@ services:
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64M
-    cpuset: "4"
+    cpuset: "3"
     # cpus: 0.25
 
     ports:
