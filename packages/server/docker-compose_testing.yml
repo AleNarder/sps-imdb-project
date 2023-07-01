@@ -16,7 +16,7 @@ services:
     mem_reservation: 64M
     cpuset: "0"
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - ./sql/:/sqlFiles/

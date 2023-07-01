@@ -40,8 +40,8 @@ services:
     mem_reservation: 64m
     cpuset: "1"
     ports:
-    # Maps port 5433 on localhost to port 5432 of the container
-      - "5434:5434"
+    # Maps port 5433 on localhost to port 5433 of the container
+      - "5435:5434"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - ./sql/:/sqlFiles/
@@ -55,7 +55,7 @@ services:
     image: postgrest/postgrest
     environment:
       PGRST_SERVER_PORT: 3001
-      PGRST_DB_URI: postgres://authenticator:sps@db_1:5433/imdb
+      PGRST_DB_URI: postgres://authenticator:sps@db_1:5432/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
     # Resources Limits

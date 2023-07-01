@@ -7,7 +7,7 @@ services:
   db_1:
     image: postgres
     environment:
-      PGPORT: 5433
+      PGPORT: 5432
       POSTGRES_DB: imdb
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
@@ -17,8 +17,8 @@ services:
     mem_reservation: 64m
     cpuset: "0"
     ports:
-    # Maps port 5433 on localhost to port 5432 of the container
-      - "5433:5433"
+    # Maps port 5432 on localhost to port 5432 of the container
+      - "5432:5432"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - ./sql/:/sqlFiles/
@@ -30,7 +30,7 @@ services:
   db_2:
     image: postgres
     environment:
-      PGPORT: 5434
+      PGPORT: 5433
       POSTGRES_DB: imdb
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
@@ -41,7 +41,7 @@ services:
     cpuset: "1"
     ports:
     # Maps port 5433 on localhost to port 5432 of the container
-      - "5434:5434"
+      - "5433:5433"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - ./sql/:/sqlFiles/
@@ -55,7 +55,7 @@ services:
     image: postgrest/postgrest
     environment:
       PGRST_SERVER_PORT: 3001
-      PGRST_DB_URI: postgres://authenticator:sps@db_1:5433/imdb
+      PGRST_DB_URI: postgres://authenticator:sps@db_1:5432/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
     # Resources Limits
@@ -72,7 +72,7 @@ services:
     image: postgrest/postgrest
     environment:
       PGRST_SERVER_PORT: 3002
-      PGRST_DB_URI: postgres://authenticator:sps@db_2:5434/imdb
+      PGRST_DB_URI: postgres://authenticator:sps@db_2:5433/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
     # Resources Limits
