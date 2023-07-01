@@ -2,9 +2,7 @@ version: '3.0'
 
 tasks:
   default:
-
     desc: Process data 
-
     dir: packages/data
 
     cmds:
@@ -16,18 +14,15 @@ tasks:
         -it sps-setup:latest
 #-----------------------------------------------------------------------
   generate:tsung:query-set:
-
-    descr: Build the query set. Generate 10_000 random ids according to the rating probability
-
+    descr: Build the query set. Generate 10_000 random ids according to
+           the rating probability
     dir: packages/tsung
 
     cmds:
       - python3 query_builder.py
 #-----------------------------------------------------------------------
   build:server:development:
-
     desc: Runs the server stack in development mode
-
     dir: packages/server
 
     preconditions: 
@@ -35,14 +30,12 @@ tasks:
         msg: MIGRATION DATA MISSING. Launch task in the terminal
       - sh: test -f ../data/processed/title.ratings.tsv
         msg: RATING DATA MISSING. Launch task in the terminal
-    
+
     cmds:
       - docker compose -f docker-compose.yml up
 #-----------------------------------------------------------------------
   build:server:testing:
-
     desc: Runs the server stack in testing mode
-
     dir: packages/server
 
     preconditions: 
@@ -55,8 +48,7 @@ tasks:
       - docker compose -f docker-compose_testing.yml up
 #-----------------------------------------------------------------------
   build:server:test_vert_scaled:
-    desc: Runs the server stack in testing mode
-
+    desc: Runs the server stack in testing mode with increased resource limits
     dir: packages/server
 
     preconditions: 
@@ -66,11 +58,11 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
 
     cmds:
-      - docker compose -f docker-compose_testing_vertical_scaling.yml up 
+      - docker compose -f docker-compose_testing_vertical_scaling.yml up
 #------------------------------------------------------------------------
   build:server:test_horiz_scaled:
-    desc: Runs the server stack in testing mode
-
+    desc: Runs the server stack in testing mode with a replication of the
+          PostgreSQL container
     dir: packages/server
     
     preconditions: 
@@ -80,14 +72,12 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
 
     cmds:
-      - docker compose -f docker-compose_testing.yml up --detach --scale db=2  
+      - docker compose -f docker-compose_testing.yml up --detach --scale db=2
       - docker update server-db-2 --cpuset-cpus 1
 #------------------------------------------------------------------------
   build:server:test_dispatching:
-
     desc: Runs the server stack in testing mode with containerised replicas 
           of the Backend (PostGREST) and the DataBase (PostgreSQL) services
-
     dir: packages/server
 
     preconditions: 
@@ -100,9 +90,7 @@ tasks:
       - docker compose -f docker-compose_dispatching.yml up
 #-----------------------------------------------------------------------
   run:tsung:bottleneck_test:
-
     desc: Perform tsung closed-loop stress test to find the System Bottleneck
-
     dir: packages/tsung
 
     vars:
@@ -136,9 +124,7 @@ tasks:
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config.xml start
 #-----------------------------------------------------------------------
   run:tsung:1_db_test:
-  
     desc: Perform a single-user tsung closed-loop test against PostregreSQL DB
-
     dir: packages/tsung
 
     vars:
@@ -167,7 +153,6 @@ tasks:
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_db.xml start
 #-----------------------------------------------------------------------
   run:tsung:2_be+db_test:
-  
     desc: Perform a single-user tsung closed-loop test against
           PostGREST backend service and PostgreSQL DB
     dir: packages/tsung
@@ -199,9 +184,8 @@ tasks:
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_1u.xml start
 #-----------------------------------------------------------------------
   run:tsung:3_rp+be+db_test:
-  
-    desc: Perform a single-user tsung closed-loop test against
-          NGINX reverse proxy, PostGREST backend service and PostgreSQL DB
+    desc: Perform a single-user tsung closed-loop test against NGINX
+          reverse proxy, PostGREST backend service and PostgreSQL DB
     dir: packages/tsung
 
     vars:
