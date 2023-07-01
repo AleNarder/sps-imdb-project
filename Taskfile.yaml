@@ -160,7 +160,7 @@ tasks:
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3001
-      TSUNG_LOG_DIR: ./logs/1u_logs/be_db
+      TSUNG_LOG_DIR: ./logs/be_db
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
       TSUNG_USER_REQUESTS: 50000
@@ -191,7 +191,7 @@ tasks:
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
-      TSUNG_LOG_DIR: ./logs/1u_logs/rp_be_db
+      TSUNG_LOG_DIR: ./logs/rp_be_db
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
       TSUNG_USER_REQUESTS: 50000
