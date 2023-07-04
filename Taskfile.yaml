@@ -61,8 +61,8 @@ tasks:
       - docker compose -f docker-compose_testing_vertical_scaling.yml up
 #------------------------------------------------------------------------
   build:server:test_horiz_scaled:
-    desc: Runs the server stack in testing mode with a replication of the
-          PostgreSQL container
+    desc: Runs the server stack in testing mode with a containerised replica 
+          of the Backend (PostGREST) service
     dir: packages/server
     
     preconditions: 
@@ -72,22 +72,8 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
 
     cmds:
-      - docker compose -f docker-compose_testing.yml up --detach --scale db=2
-      - docker update server-db-2 --cpuset-cpus 1
-#------------------------------------------------------------------------
-  build:server:test_dispatching:
-    desc: Runs the server stack in testing mode with containerised replicas 
-          of the Backend (PostGREST) and the DataBase (PostgreSQL) services
-    dir: packages/server
-
-    preconditions: 
-      - sh: test -f ../data/processed/title.basics.tsv
-        msg: MIGRATION DATA MISSING. Launch task in the terminal
-      - sh: test -f ../data/processed/title.ratings.tsv
-        msg: RATING DATA MISSING. Launch task in the terminal
-
-    cmds:
-      - docker compose -f docker-compose_dispatching.yml up
+      - docker compose -f docker-compose_testing_horizontal_scaling.yml up --scale backend=2
+      - docker update server-backend-2 --cpuset-cpus 6
 #-----------------------------------------------------------------------
   run:tsung:bottleneck_test:
     desc: Perform tsung closed-loop stress test to find the System Bottleneck

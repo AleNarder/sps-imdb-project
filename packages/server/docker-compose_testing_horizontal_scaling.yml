@@ -1,4 +1,4 @@
-# CONFIGURATION FOR PERFORMANCE ANALYSIS
+# CONFIGURATION FOR DISPATCHING ANALYSIS
 
 version: '2.4'
 
@@ -7,15 +7,17 @@ services:
   db:
     image: postgres
     environment:
+      PGPORT: 5432
       POSTGRES_DB: imdb
       POSTGRES_USER: authenticator
       POSTGRES_PASSWORD: sps
       POSTGRES_HOST_AUTH_METHOD: trust
-    # Reources Limits
-    mem_limit: 128m
-    mem_reservation: 64M
-    cpuset: "0"
+    # Resources Limits
+    mem_limit: 1024m
+    mem_reservation: 64m
+    cpuset: "0,6"
     ports:
+    # Maps port 5433 on localhost to port 5432 of the container
       - "5433:5432"
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
@@ -24,11 +26,6 @@ services:
       - ../data/processed/title.ratings.tsv:/data/title.ratings.tsv
       - ../data/processed/title.crew.tsv:/data/title.crew.tsv
       - ../data/processed/title.episode.tsv:/data/title.episode.tsv
-      # - ../data/processed/title.principals.tsv:/data/title.principals.tsv
-      # - ../data/processed/name.basics.tsv:/data/name.basics.tsv
-      # - ./sql/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./sql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      # - ./sql/logs/:/var/lib/postgresql/data/logs/
 
 
   backend:
@@ -38,12 +35,13 @@ services:
       PGRST_DB_URI: postgres://authenticator:sps@db:5432/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
+      PGRST_DB_POOL: 100
     # Resources Limits
     mem_limit: 128m
-    mem_reservation: 64M
+    mem_reservation: 64m
     cpuset: "2"
     ports:
-      - "3001:3001"
+      - "3001-3002:3001"
     depends_on:
       - db
 
@@ -51,10 +49,11 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./nginx/nginx_dispatching_roundr.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx_dispatching_random.conf:/etc/nginx/nginx.conf:ro
     # Resources Limits
     mem_limit: 128m
-    mem_reservation: 64M
+    mem_reservation: 64m
     cpuset: "4"
     ports:
       - "3000:80"
