@@ -96,8 +96,8 @@ tasks:
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
-      TSUNG_LOG_DIR: ./logs/bottleneck_logs
-      TSUNG_MAXUSERS: 300
+      TSUNG_LOG_DIR: ./logs/bottleneck
+      TSUNG_MAXUSERS: 400
       TSUNG_MAXDURATION: 15
       TSUNG_ARRIVALPHASE_DURATION: 7
       TSUNG_ARRIVALPHASE_RATE: 1
@@ -123,14 +123,14 @@ tasks:
 
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config.xml start
 #-----------------------------------------------------------------------
-  run:tsung:1_db_test:
+  run:tsung:db_test:
     desc: Perform a single-user tsung closed-loop test against PostregreSQL DB
     dir: packages/tsung
 
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 5433
-      TSUNG_LOG_DIR: ./logs/db_logs
+      TSUNG_LOG_DIR: ./logs/db
       TSUNG_MAXUSERS: 1
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
@@ -152,7 +152,7 @@ tasks:
 
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_db.xml start
 #-----------------------------------------------------------------------
-  run:tsung:2_be+db_test:
+  run:tsung:db+be_test:
     desc: Perform a single-user tsung closed-loop test against
           PostGREST backend service and PostgreSQL DB
     dir: packages/tsung
@@ -160,7 +160,7 @@ tasks:
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3001
-      TSUNG_LOG_DIR: ./logs/be_db
+      TSUNG_LOG_DIR: ./logs/db_be
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
       TSUNG_USER_REQUESTS: 50000
@@ -183,7 +183,7 @@ tasks:
 
       - tsung -l {{ .TSUNG_LOG_DIR }} -f ./tsung_config_1u.xml start
 #-----------------------------------------------------------------------
-  run:tsung:3_rp+be+db_test:
+  run:tsung:db+be+rp_test:
     desc: Perform a single-user tsung closed-loop test against NGINX
           reverse proxy, PostGREST backend service and PostgreSQL DB
     dir: packages/tsung
@@ -191,7 +191,7 @@ tasks:
     vars:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
-      TSUNG_LOG_DIR: ./logs/rp_be_db
+      TSUNG_LOG_DIR: ./logs/db_be_rp
       TSUNG_MAXDURATION: 10
       TSUNG_ARRIVALPHASE_DURATION: 1
       TSUNG_USER_REQUESTS: 50000
