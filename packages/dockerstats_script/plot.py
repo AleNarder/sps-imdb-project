@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 folder=input("Enter the desired folder: ")
-headers = ['cpu', 'mem', 'mempercent','date',"time"]
+headers = ['cpu', 'mem', 'mempercent','blockI','blockO','date',"time"]
 
 try:
 	df_db = pd.read_csv(folder+'/db1/db1.csv', names=headers)
