@@ -38,6 +38,7 @@ services:
       PGRST_DB_URI: postgres://authenticator:sps@db:5432/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
+      PGRST_DB_POOL: 100
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64M

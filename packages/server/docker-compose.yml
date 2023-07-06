@@ -39,6 +39,7 @@ services:
       PGRST_DB_URI: postgres://authenticator:sps@db:5432/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
+      PGRST_DB_POOL: 100
     # Resources Limits
     mem_limit: 512m
     mem_reservation: 64M
@@ -61,6 +62,7 @@ services:
       - "3000:80"
     depends_on:
       - db
+      - backend
 
 
   swagger:
@@ -69,8 +71,12 @@ services:
     mem_limit: 128m
     cpus: 0.05
     ports:
-      - "3001:8080"
+      - "8080:8080"
     expose:
       - "8080"
     environment:
       API_URL: http://localhost:3000/
+    depends_on:
+      - db
+      - backend
+      - nginx

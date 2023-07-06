@@ -14,7 +14,7 @@ services:
     # Resources Limits
     mem_limit: 1024m
     mem_reservation: 128m
-    cpuset: "0,6"
+    cpuset: "0"
     ports:
       - "5433:5432"
     volumes:
@@ -38,6 +38,7 @@ services:
       PGRST_DB_URI: postgres://authenticator:sps@db:5432/imdb
       PGRST_DB_SCHEMAS: "imdb"
       PGRST_DB_ANON_ROLE: "web_anon"
+      PGRST_DB_POOL: 100
     # Resources Limits
     mem_limit: 128m
     mem_reservation: 64M
