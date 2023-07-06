@@ -14,7 +14,7 @@ services:
     # Resources Limits
     mem_limit: 1024m
     mem_reservation: 128m
-    cpuset: "0,6"
+    cpuset: "0"
     ports:
       - "5433:5432"
     volumes:
