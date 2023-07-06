@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 
 folder=input("Enter the desired folder: ")
-headers = ['cpu', 'mem', 'mempercent','blockI','blockO','date',"time"]
+headers = ['cpu', 'mem', 'mempercent',"BlockI","BlockO",'date',"time"]
+flag=0
 
 try:
 	df_db = pd.read_csv(folder+'/db1/db1.csv', names=headers)
@@ -13,7 +14,7 @@ try:
 	#plot db data
 
 	print("plotting Database Cpu usage (%) ...")
-	plt.title("Cpu")
+	plt.title("Database Cpu")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Cpu (%)')
 	plt.plot(df_db["time"],df_db["cpu"])
@@ -21,7 +22,7 @@ try:
 	plt.clf()
 
 	print("plotting Database Ram usage (Mib) ...")
-	plt.title("Ram Usage")
+	plt.title("Database Ram Usage")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Ram (MiB)')
 	plt.plot(df_db["time"],df_db["mem"])
@@ -29,17 +30,43 @@ try:
 	plt.clf()
 
 	print("plotting Database Ram usage (%) ...")
-	plt.title("Ram")
+	plt.title("Database Ram")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Ram (%)')
 	plt.plot(df_db["time"],df_db["mempercent"])
 	plt.savefig(folder+'/db1/rampercentplot.png')
 	plt.clf()
+
+	print("plotting Database Block Input (Mib) ...")
+	plt.title("Database Block Input")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Input (MiB)')
+	plt.plot(df_db["time"],df_db["BlockI"])
+	plt.savefig(folder+'/db1/blockinput.png')
+	plt.clf()
+
+	print("plotting Database Block Output (Mib) ...")
+	plt.title("Database Block Input")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Output (MiB)')
+	plt.plot(df_db["time"],df_db["BlockO"])
+	plt.savefig(folder+'/db1/blockoutput.png')
+	plt.clf()
+
+	print("plotting Database Block I/O (Mib) ...")
+	plt.title("Database Block I/O")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('I/O (MiB)')
+	plt.plot(df_db["time"],df_db["BlockI"],color="red",label="Input")	
+	plt.plot(df_db["time"],df_db["BlockO"],color="blue",label="Output")
+	plt.savefig(folder+'/db1/blockIO.png')
+	plt.clf()
+
 	#########################################################################
 
 	#plot backend data
 	print("plotting Backend Cpu usage (%) ...")
-	plt.title("Cpu")
+	plt.title("Backend Cpu")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Cpu (%)')
 	plt.plot(df_backend["time"],df_backend["cpu"])
@@ -47,7 +74,7 @@ try:
 	plt.clf()
 
 	print("plotting Backend Ram usage (Mib) ...")
-	plt.title("Ram Usage")
+	plt.title("Backend Ram Usage")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Ram (MiB)')
 	plt.plot(df_backend["time"],df_backend["mem"])
@@ -55,17 +82,43 @@ try:
 	plt.clf()
 
 	print("plotting Backend Ram usage (%) ...")
-	plt.title("Ram")
+	plt.title("Backend Ram")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Ram (%)')
 	plt.plot(df_backend["time"],df_backend["mempercent"])
 	plt.savefig(folder+'/backend1/rampercentplot.png')
 	plt.clf()
+
+	print("plotting Backend Block Input (Mib) ...")
+	plt.title("Backend Block Input")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Input (MiB)')
+	plt.plot(df_backend["time"],df_backend["BlockI"])
+	plt.savefig(folder+'/backend1/blockinput.png')
+	plt.clf()
+
+	print("plotting Backend Block Output (Mib) ...")
+	plt.title("Backend Block Input")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Output (MiB)')
+	plt.plot(df_backend["time"],df_backend["BlockO"])
+	plt.savefig(folder+'/backend1/blockoutput.png')
+	plt.clf()
+
+	print("plotting Backend Block I/O (Mib) ...")
+	plt.title("Backend Block I/O")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('I/O (MiB)')
+	plt.plot(df_backend["time"],df_backend["BlockI"],color="red",label="Input")	
+	plt.plot(df_backend["time"],df_backend["BlockO"],color="blue",label="Output")
+	plt.savefig(folder+'/backend1/blockIO.png')
+	plt.clf()
+
 	##########################################################################
 
 	#plot nginx data
 	print("plotting Proxy Cpu usage (%) ...")
-	plt.title("Cpu")
+	plt.title("Proxy Cpu")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Cpu (%)')
 	plt.plot(df_nginx["time"],df_nginx["cpu"])
@@ -73,7 +126,7 @@ try:
 	plt.clf()
 
 	print("plotting Proxy Ram usage (Mib) ...")
-	plt.title("Ram Usage")
+	plt.title("Proxy Ram Usage")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Ram (MiB)')
 	plt.plot(df_nginx["time"],df_nginx["mem"])
@@ -81,12 +134,38 @@ try:
 	plt.clf()
 
 	print("plotting Proxy Ram usage (%) ...")
-	plt.title("Ram")
+	plt.title("Proxy Ram")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Ram (%)')
 	plt.plot(df_nginx["time"],df_nginx["mempercent"])
 	plt.savefig(folder+'/nginx1/rampercentplot.png')
 	plt.clf()
+
+	print("plotting Proxy Block Input (Mib) ...")
+	plt.title("Proxy Block Input")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Input (MiB)')
+	plt.plot(df_nginx["time"],df_nginx["BlockI"])
+	plt.savefig(folder+'/nginx1/blockinput.png')
+	plt.clf()
+
+	print("plotting Proxy Block Output (Mib) ...")
+	plt.title("Proxy Block Input")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Output (MiB)')
+	plt.plot(df_nginx["time"],df_nginx["BlockO"])
+	plt.savefig(folder+'/nginx1/blockoutput.png')
+	plt.clf()
+
+	print("plotting Proxy Block I/O (Mib) ...")
+	plt.title("Proxy Block I/O")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('I/O (MiB)')
+	plt.plot(df_nginx["time"],df_nginx["BlockI"],color="red",label="Input")	
+	plt.plot(df_nginx["time"],df_nginx["BlockO"],color="blue",label="Output")
+	plt.savefig(folder+'/nginx1/blockIO.png')
+	plt.clf()
+
 except Exception as e:
 	print("Stats file (*.csv) needed")
 	print("Check for Database, Backend or Proxy subdirecotry existence")
@@ -94,32 +173,133 @@ except Exception as e:
 
 ###backend scaling#####
 try:
-	df_backend= pd.read_csv(folder+'/backend2/backend2.csv', names=headers)
+	df_backend2 = pd.read_csv(folder+'/backend2/backend2.csv', names=headers)
 
 	print("plotting replicated Backend Cpu usage (%) ...")
-	plt.title("Cpu")
+	plt.title("Backend-2 Cpu")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Cpu (%)')
-	plt.plot(df_backend["time"],df_backend["cpu"])
+	plt.plot(df_backend2["time"],df_backend2["cpu"])
 	plt.savefig(folder+'/backend2/cpuplot.png')
 	plt.clf()
 
 	print("plotting replicated Backend Ram usage (Mib) ...")
-	plt.title("Ram Usage")
+	plt.title("Backend-2 Ram Usage")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Ram (MiB)')
-	plt.plot(df_backend["time"],df_backend["mem"])
+	plt.plot(df_backend2["time"],df_backend2["mem"])
 	plt.savefig(folder+'/backend2/ramplot.png')
 	plt.clf()
 
 	print("plotting replicated Backend Ram usage (%) ...")
-	plt.title("Ram")
+	plt.title("Backend-2 Ram")
 	plt.xlabel('Time (sec)') 
 	plt.ylabel('Ram (%)')
-	plt.plot(df_backend["time"],df_backend["mempercent"])
+	plt.plot(df_backend2["time"],df_backend2["mempercent"])
 	plt.savefig(folder+'/backend2/rampercentplot.png')
 	plt.clf()
+
+	print("plotting replicated Backend Block Input (Mib) ...")
+	plt.title("Backend-2 Block Input")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Input (MiB)')
+	plt.plot(df_backend2["time"],df_backend2["BlockI"])
+	plt.savefig(folder+'/backend2/blockinput.png')
+	plt.clf()
+
+	print("plotting replicated Backend Block Output (Mib) ...")
+	plt.title("Backend-2 Block Input")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Output (MiB)')
+	plt.plot(df_backend2["time"],df_backend2["BlockO"])
+	plt.savefig(folder+'/backend2/blockoutput.png')
+	plt.clf()
+
+	print("plotting replicated Backend Block I/O (Mib) ...")
+	plt.title("Backend-2 Block I/O")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('I/O (MiB)')
+	plt.plot(df_backend2["time"],df_backend2["BlockI"],color="red",lable="Input")	
+	plt.plot(df_backend2["time"],df_backend2["BlockO"],color="blue",lable="Output")
+	plt.savefig(folder+'/backend2/blockIO.png')
+	plt.clf()
+
+
+	flag=1
 
 except Exception as e:
 	print("No BackEnd scaling for this configuration")
 	print(e)
+
+
+if flag==0:
+
+	print("plotting aggregated Cpu usage (%) ...")
+	plt.title("Cpu")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Cpu (%)')
+	plt.plot(df_db["time"],df_db["cpu"],color="red",label="Database")
+	plt.plot(df_backend["time"],df_backend["cpu"],color="blue",label="Backend")
+	plt.plot(df_nginx["time"],df_nginx["cpu"],color="green",label="Proxy")
+	plt.legend(loc="center right")
+	plt.savefig(folder+'/agg_cpu.png')
+	plt.clf()
+
+	print("plotting aggregated Ram usage (Mib) ...")
+	plt.title("Ram Usage")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Ram (MiB)')
+	plt.plot(df_db["time"],df_db["mem"],color="red",label="Database")
+	plt.plot(df_backend["time"],df_backend["mem"],color="blue",label="Backend")
+	plt.plot(df_nginx["time"],df_nginx["mem"],color="green",label="Proxy")
+	plt.legend(loc="center right")
+	plt.savefig(folder+'/agg_ram.png')
+	plt.clf()
+
+	print("plotting aggregated Ram usage (%) ...")
+	plt.title("Ram")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Ram (%)')
+	plt.plot(df_db["time"],df_db["mempercent"],color="red",label="Database")
+	plt.plot(df_backend["time"],df_backend["mempercent"],color="blue",label="Backend")
+	plt.plot(df_nginx["time"],df_nginx["mempercent"],color="green",label="Proxy")
+	plt.legend(loc="center right")
+	plt.savefig(folder+'/agg_ram_percent.png')
+	plt.clf()
+
+if flag==1:
+	print("plotting aggregated Cpu usage (%) ...")
+	plt.title("Cpu")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Cpu (%)')
+	plt.plot(df_db["time"],df_db["cpu"],color="red",label="Database")
+	plt.plot(df_backend["time"],df_backend["cpu"],color="blue",label="Backend-1")
+	plt.plot(df_backend2["time"],df_backend2["cpu"],color="yellow",label="Backend-2")
+	plt.plot(df_nginx["time"],df_nginx["cpu"],color="green",label="Proxy")
+	plt.legend(loc="center right")
+	plt.savefig(folder+'/agg_cpu.png')
+	plt.clf()
+
+	print("plotting aggregated Ram usage (Mib) ...")
+	plt.title("Ram Usage")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Ram (MiB)')
+	plt.plot(df_db["time"],df_db["mem"],color="red",label="Database")
+	plt.plot(df_backend["time"],df_backend["mem"],color="blue",label="Backend-1")
+	plt.plot(df_backend2["time"],df_backend2["mem"],color="yellow",label="Backend-2")
+	plt.plot(df_nginx["time"],df_nginx["mem"],color="green",label="Proxy")
+	plt.legend(loc="center right")
+	plt.savefig(folder+'/agg_ram.png')
+	plt.clf()
+
+	print("plotting aggregated Ram usage (%) ...")
+	plt.title("Ram")
+	plt.xlabel('Time (sec)') 
+	plt.ylabel('Ram (%)')
+	plt.plot(df_db["time"],df_db["mempercent"],color="red",label="Database")
+	plt.plot(df_backend["time"],df_backend["mempercent"],color="blue",label="Backend-1")
+	plt.plot(df_backend2["time"],df_backend2["mempercent"],color="yellow",label="Backend-2")
+	plt.plot(df_nginx["time"],df_nginx["mempercent"],color="green",label="Proxy")
+	plt.legend(loc="center right")
+	plt.savefig(folder+'/agg_ram_percent.png')
+	plt.clf()

@@ -4,9 +4,9 @@ echo "Insert load duration(sec): "
 read loadDuration;
 
 
-mkdir -p /${folder}/db1;
-mkdir -p /${folder}/backend1;
-mkdir -p /${folder}/nginx1;
+mkdir -p ${folder}/db1;
+mkdir -p ${folder}/backend1;
+mkdir -p ${folder}/nginx1;
 
 
 d1=$(date +%s);
