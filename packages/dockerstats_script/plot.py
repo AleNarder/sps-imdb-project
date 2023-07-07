@@ -7,7 +7,7 @@ parser.add_argument('foldername', help = "Stats Directory")
 args = parser.parse_args()
 
 containers = ["db1", "backend1", "nginx1", "backend2", "backend3"]
-components = {"CPU" : ["CPU (%)", "cpu"], "RAM" : ["RAM (MiB)", "mem"], "RAM_percent" : ["RAM (%)", "mempercent"], "Block_I" : ["Block Input (kB)", "blockI"],"Block_I" : ["Block Output (kB)", "blockO"]}
+components = {"CPU" : ["CPU (%)", "cpu"], "RAM" : ["RAM (MiB)", "mem"], "RAM_percent" : ["RAM (%)", "mempercent"], "Block_I" : ["Block Input (kB)", "blockI"],"Block_O" : ["Block Output (kB)", "blockO"]}
 
 try:
 	for container in containers:
