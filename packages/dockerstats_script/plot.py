@@ -11,10 +11,8 @@ components = {"CPU" : ["CPU (%)", "cpu"], "RAM" : ["RAM (MiB)", "mem"], "RAM_per
 
 try:
 	for container in containers:
-		if container == "db1" or container == "nginx1":
-			headers = ['cpu', 'mem', 'mempercent','blockI','blockO','boh', 'date',"time"]
-		else:
-			headers = ['cpu', 'mem', 'mempercent','blockI','blockO','date','time']
+		headers = ['cpu', 'mem', 'mempercent','blockI','blockO', 'date',"time"]
+
 		df = pd.read_csv(args.foldername + '/' + container + '/' + container + '.csv', names=headers)
 		for key, value in components.items():
 			print("plotting Database " + value[0] + " usage ...")
