@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+if [[ $OSTYPE == 'darwin'* ]]; then
+    LANG="en_US.UTF-8"
+else
+	LC_NUMERIC="en_US.UTF-8"
+fi;
 
 echo "Insert parent destination folder: "
 read folder;
