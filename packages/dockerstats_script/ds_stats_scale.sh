@@ -28,17 +28,17 @@ do
 	for i in "${!arr[@]}"
 	do
 		echo "$var" | grep "$i"| awk -v date="$(date +%T)" -v time=$time -v binput=0 -v boutput=0 '{
-		if(index($11,"B")){gsub("B","",$11); binput=$11/1000000;}
-		if(index($11,"kB")){gsub("kB","",$11); binput=$11/1000;}
-		if(index($11,"MiB")){gsub("MiB","",$11); binput=$11;}
-		if(index($11,"GiB")){gsub("GiB","",$11); binput=$11*1000;}
-		if(index($13,"B")){gsub("B","",$13); boutput=$13/1000;}
+		if(index($11,"kB")){gsub("kB","",$11); binput=$11;}
+		if(index($11,"MiB")){gsub("MiB","",$11); binput=$11*1000;}
+		if(index($11,"GiB")){gsub("GiB","",$11); binput=$11*1000000;}
+		if(index($11,"B")){gsub("B","",$11); binput=$11/1000;}
 		if(index($13,"kB")){gsub("kB","",$13); boutput=$13;}
 		if(index($13,"MiB")){gsub("MiB","",$13); boutput=$13*1000;}
 		if(index($13,"GiB")){gsub("GiB","",$13); boutput=$13*1000000;}
+		if(index($13,"B")){gsub("B","",$13); boutput=$13/1000;}
 		if(index($4, "GiB")) 
-		{gsub("GiB","",$4); print $3","$4 * 1000","$7","binput","boutput","date","time } 
-		else {gsub("MiB","",$4); print $3","$4","$7","binput","boutput","date","time}}'| sed -e 's/MiB//g'| sed -e 's/GiB//g' | sed -e 's/%//g' >> ${folder}/${arr[$i]}/${arr[$i]}.csv; 
+		{gsub("GiB","",$4); printf("%s,%0.1f,%0.2f,%0.2f,%0.2f,%s,%d\n") $3,$4 * 1000,$7,binput,boutput,date,time } 
+		else {gsub("MiB","",$4); printf("%s,%0.1f,%0.2f,%0.2f,%0.2f,%s,%d\n") $3,$4,$7,binput,boutput,date,time}}'| sed -e 's/MiB//g'| sed -e 's/GiB//g' | sed -e 's/%//g' >> ${folder}/${arr[$i]}/${arr[$i]}.csv;
 	done
 
 	timetemp=$time;
