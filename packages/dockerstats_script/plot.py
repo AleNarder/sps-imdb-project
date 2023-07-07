@@ -40,7 +40,7 @@ except Exception as e:
 	print(e)
 
 
-
+# Create comparison plots
 for key, value in components.items():
 	plt.title(value[0])
 	plt.xlabel('Time (sec)') 
@@ -50,5 +50,5 @@ for key, value in components.items():
 		plt.plot(df["time"], df[value[1]],color=colors[index],label=containers[index])
 		index+=1
 	plt.legend(loc="center right")
-	plt.savefig(args.foldername + key + 'plot.png')
+	plt.savefig(args.foldername + '/comparison_plots/' + key + 'plot.png')
 	plt.clf()
