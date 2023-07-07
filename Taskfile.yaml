@@ -72,8 +72,9 @@ tasks:
         msg: RATING DATA MISSING. Launch task in the terminal
 
     cmds:
-      - docker compose -f docker-compose_testing_horizontal_scaling.yml up --scale backend=2
+      - docker compose -f docker-compose_testing_horizontal_scaling.yml up --scale backend=3
       - docker update server-backend-2 --cpuset-cpus 6
+      - docker update server-backend-3 --cpuset-cpus 8
 #-----------------------------------------------------------------------
   run:tsung:bottleneck_test:
     desc: Perform tsung closed-loop stress test to find the System Bottleneck
@@ -83,7 +84,7 @@ tasks:
       TSUNG_HOST: 192.168.1.18
       TSUNG_PORT: 3000
       TSUNG_LOG_DIR: ./logs/bottleneck
-      TSUNG_MAXUSERS: 400
+      TSUNG_MAXUSERS: 500
       TSUNG_MAXDURATION: 15
       TSUNG_ARRIVALPHASE_DURATION: 7
       TSUNG_ARRIVALPHASE_RATE: 1

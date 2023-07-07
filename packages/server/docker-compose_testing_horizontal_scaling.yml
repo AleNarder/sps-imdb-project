@@ -15,7 +15,7 @@ services:
     # Resources Limits
     mem_limit: 1024m
     mem_reservation: 64m
-    cpuset: "0,6"
+    cpuset: "0"
     ports:
     # Maps port 5433 on localhost to port 5432 of the container
       - "5433:5432"
@@ -41,7 +41,7 @@ services:
     mem_reservation: 64m
     cpuset: "2"
     ports:
-      - "3001-3002:3001"
+      - "3001-3003:3001"
     depends_on:
       - db
 
