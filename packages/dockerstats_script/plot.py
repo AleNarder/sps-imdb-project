@@ -6,14 +6,20 @@ parser = argparse.ArgumentParser()
 parser.add_argument('foldername', help = "Stats Directory")
 args = parser.parse_args()
 
+
 containers = ["db1", "backend1", "nginx1", "backend2", "backend3"]
-components = {"CPU" : ["CPU (%)", "cpu"], "RAM" : ["RAM (MiB)", "mem"], "RAM_percent" : ["RAM (%)", "mempercent"], "Block_I" : ["Block Input (kB)", "blockI"],"Block_O" : ["Block Output (kB)", "blockO"]}
+
+components = {"CPU" : ["CPU (%)", "cpu"],
+	      	  "RAM" : ["RAM (MiB)", "mem"],
+	          "RAM_percent" : ["RAM (%)", "mempercent"],
+			  "Block_I" : ["Block Input (kB)", "blockI"],
+			  "Block_O" : ["Block Output (kB)", "blockO"]}
+
+headers = ['cpu', 'mem', 'mempercent','blockI','blockO', 'date',"time"]
 
 try:
 	for container in containers:
-		headers = ['cpu', 'mem', 'mempercent','blockI','blockO', 'date',"time"]
-
-		df = pd.read_csv(args.foldername + '/' + container + '/' + container + '.csv', names=headers)
+		df = pd.read_csv(args.foldername + '/'+ container +'/'+ container +'.csv', names=headers)
 		for key, value in components.items():
 			print("plotting Database " + value[0] + " usage ...")
 			plt.title(value[0])
