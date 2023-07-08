@@ -31,7 +31,7 @@ try:
 			plt.xlabel('Time (sec)') 
 			plt.ylabel(value[0])
 			plt.plot(df["time"], df[value[1]])
-			plt.savefig(args.foldername + '/' + container + '/' + key + 'plot.png')
+			plt.savefig(args.foldername +'/'+ container +'/'+ key +'plot.svg')
 			plt.clf()
 
 except Exception as e:
@@ -51,5 +51,5 @@ for key, value in components.items():
 		plt.plot(df["time"], df[value[1]],color=colors[index],label=containers[index])
 		index+=1
 	plt.legend(loc="center right")
-	plt.savefig(args.foldername + '/comparison_plots/' + key + 'plot.png')
+	plt.savefig(args.foldername + '/comparison_plots/' + key + 'plot.svg')
 	plt.clf()
