@@ -38,6 +38,7 @@ except Exception as e:
 	print("Stats file (*.csv) needed")
 	print("Check for Database, Backend or Proxy subdirecotry existence")
 	print(e)
+	pass
 
 
 # Create comparison plots

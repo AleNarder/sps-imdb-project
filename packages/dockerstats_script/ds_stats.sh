@@ -13,6 +13,7 @@ read loadDuration;
 mkdir -p ${folder}/db1;
 mkdir -p ${folder}/backend1;
 mkdir -p ${folder}/nginx1;
+mkdir -p ${folder}/comparison_plots;
 
 
 d1=$(date +%s);
