@@ -25,8 +25,35 @@
     - [x] Create a query set. The probability that a film is searched is proportional to the number of rating that it has received
     - [x] Perform a closed-loop test with tsung using the query set
     - [x] Limit resources usage of containers for permance testing
-    - [] Improve horizontal scalability (through replication) and vertical scalability (through db tuning and resource enhancement) <*>
+    - [x] Improve horizontal scalability (through replication) and vertical scalability (through db tuning and resource enhancement) <*>
     - [] JMT - find the service rates of the systems' components and perform analysis
 
 - ## Report
-    - [] Write a boring report (latex)
+    - Write a boring report (latex)
+        - Introduction:
+            - [] aim of the report;
+            - [] environment setup (brief explanation)
+
+        - System Architecture:
+            - [] structure of the SUT;
+
+        - Closed Loop Testing:
+            - [] define how the query set is created;
+            - for each test in (128mb, 1gb, 3be, 3be_33conn):
+                - [] test scalability of the system;
+                - [] (Scalability of the system) State which is the number of users it can handle, through graphs and mathematical analysis... 
+                - [] identify the bottleneck
+                - [] draw some conclusions on the test
+                - [] increase the performance of the bottleneck component and start over
+            - identify the problem of the "repetitive service" policy and report the results of the tests (1BE with 1, 10, 450 users/connections)
+            - re-do the tests (?) -> (Test 1BE 2/3 core DB) (at this point the Database should always be the bottleneck (?)) or just make a consideration on the new bottleneck, state that the new tests confirm the previous "single user" response time analysis
+
+        - JMT testing:
+            - for each test needed:
+                - [] identify the bottleneck
+                - [] state the number of users...is the number increased w.r.t. previous tests?
+                - [] ...
+
+        - Conclusion:
+            - [] state the results of analysis and comment on the findings;
+            - [] add section of "future works"
