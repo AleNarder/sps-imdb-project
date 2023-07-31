@@ -31,29 +31,30 @@
 - ## Report
     - Write a boring report (latex)
         - Introduction:
-            - [] aim of the report;
-            - [] environment setup (brief explanation)
+            - [] aim of the report; (Enrico)
+            - [] environment setup (brief explanation) (Enrico)
 
         - System Architecture:
-            - [] structure of the SUT;
+            - [] structure of the SUT; (Alessio)
 
         - Closed Loop Testing:
-            - [] define how the query set is created;
-            - for each test in (128mb, 1gb, 3be, 3be_33conn):
+            - [] define how the query set is created; (Alessio)
+            - [] Closed Loop introduction (G.I. Joe)
+            - for each test in (128mb, 1gb, 3be, 3be_33conn): (Alessio, Enrico, G.I. Joe)
                 - [] test scalability of the system;
                 - [] (Scalability of the system) State which is the number of users it can handle, through graphs and mathematical analysis... 
                 - [] identify the bottleneck
                 - [] draw some conclusions on the test
                 - [] increase the performance of the bottleneck component and start over
-            - identify the problem of the "repetitive service" policy and report the results of the tests (1BE with 1, 10, 450 users/connections)
-            - re-do the tests (?) -> (Test 1BE 2/3 core DB) (at this point the Database should always be the bottleneck (?)) or just make a consideration on the new bottleneck, state that the new tests confirm the previous "single user" response time analysis
+            - identify the problem of the "repetitive service" policy and report the results of the tests (1BE with 1, 10, 450 users/connections) (Enrico / Alessio / G.I. Joe)
+            - [x] re-do the tests (?) -> (Test 1BE 3 core DB) (at this point the Database should always be the bottleneck (?)) or just make a consideration on the new bottleneck, state that the new tests confirm the previous "single user" response time analysis 
 
-        - JMT testing:
+        - JMT testing: (G.I. Joe)
             - for each test needed:
                 - [] identify the bottleneck
                 - [] state the number of users...is the number increased w.r.t. previous tests?
                 - [] ...
 
         - Conclusion:
-            - [] state the results of analysis and comment on the findings;
-            - [] add section of "future works"
+            - [] state the results of analysis and comment on the findings (Alessio / Enrico / G.I. Joe)
+            - [] add section of "future works" (Scheduling policies -> Alessio)
