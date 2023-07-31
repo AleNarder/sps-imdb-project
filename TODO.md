@@ -35,7 +35,7 @@
             - [] environment setup (brief explanation) (Enrico)
 
         - System Architecture:
-            - [] structure of the SUT; (Alessio)
+            - [x] structure of the SUT; (Alessio)
 
         - Closed Loop Testing:
             - [] define how the query set is created; (Alessio)
@@ -57,4 +57,4 @@
 
         - Conclusion:
             - [] state the results of analysis and comment on the findings (Alessio / Enrico / G.I. Joe)
-            - [] add section of "future works" (Scheduling policies -> Alessio)
+            - [x] add section of "future works" (Scheduling policies -> Alessio)
