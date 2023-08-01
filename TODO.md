@@ -38,7 +38,7 @@
             - [x] structure of the SUT; (Alessio)
 
         - Closed Loop Testing:
-            - [] define how the query set is created; (Alessio)
+            - [x] define how the query set is created; (Alessio)
             - [] Closed Loop introduction (G.I. Joe)
             - for each test in (128mb, 1gb, 3be, 3be_33conn): (Alessio, Enrico, G.I. Joe)
                 - [] test scalability of the system;
