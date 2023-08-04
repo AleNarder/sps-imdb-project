@@ -19,7 +19,7 @@
 
 - ## Dispatcher
     - [x] Set up an **nginx** dispatcher
-    - [] Test different dispatching policies
+    - [x] Test different dispatching policies
 
 - ## Tests
     - [x] Create a query set. The probability that a film is searched is proportional to the number of rating that it has received
@@ -31,8 +31,8 @@
 - ## Report
     - Write a boring report (latex)
         - Introduction:
-            - [] aim of the report; (Enrico)
-            - [] environment setup (brief explanation) (Enrico)
+            - [x] aim of the report; (Enrico)
+            - [x] environment setup (brief explanation) (Enrico)
 
         - System Architecture:
             - [x] structure of the SUT; (Alessio)
@@ -46,7 +46,7 @@
                 - [] identify the bottleneck
                 - [] draw some conclusions on the test
                 - [] increase the performance of the bottleneck component and start over
-            - identify the problem of the "repetitive service" policy and report the results of the tests (1BE with 1, 10, 450 users/connections) (Enrico / Alessio / G.I. Joe)
+            - [] identify the problem of the "repetitive service" policy and report the results of the tests (1BE with 1, 10, 450 users/connections) (Enrico / Alessio / G.I. Joe)
             - [x] re-do the tests (?) -> (Test 1BE 3 core DB) (at this point the Database should always be the bottleneck (?)) or just make a consideration on the new bottleneck, state that the new tests confirm the previous "single user" response time analysis 
 
         - JMT testing: (G.I. Joe)
