@@ -17,6 +17,8 @@ parser.add_argument("-q", "--query", help = "Query to be executed by the Databas
 
 args = parser.parse_args()
 
+dtd_file = ''
+
 if platform.system() == 'Darwin':
     dtd_file = '/usr/local/Cellar/tsung/1.8.0/share/tsung/tsung-1.0.dtd'
 elif platform.system() == 'Linux':
