@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import argparse
 
+measurement_unit = "no measure"
 parser = argparse.ArgumentParser()
 parser.add_argument('foldername', help = "Stats Directory")
 args = parser.parse_args()
@@ -22,7 +23,7 @@ components = {"CPU" : ["CPU (%)", "cpu"],
 headers = ['cpu', 'mem', 'mempercent','blockI','blockO','pids', 'date',"time"]
 
 def change_unit(x, pos):
-	global measurement_unit
+	global measurement_unit 
 	if x >= 1000000:
 		measurement_unit = "GB"
 		return f"{x/1000000:.1f} GB"
