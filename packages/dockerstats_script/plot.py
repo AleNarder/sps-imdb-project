@@ -15,23 +15,41 @@ df_merge=[]
 components = {"CPU" : ["CPU (%)", "cpu"],
 	      	  "RAM" : ["RAM (MiB)", "mem"],
 	          "RAM_percent" : ["RAM (%)", "mempercent"],
-			  "Block_I" : ["Block Input (kB)", "blockI"],
-			  "Block_O" : ["Block Output (kB)", "blockO"],
+			  "Block_I" : ["Block Input", "blockI"],
+			  "Block_O" : ["Block Output", "blockO"],
 			  "PIDS" : ["PIDS", "pids"]}
 
 headers = ['cpu', 'mem', 'mempercent','blockI','blockO','pids', 'date',"time"]
 
+def change_unit(x, pos):
+	global measurement_unit
+	if x >= 1000000:
+		measurement_unit = "GB"
+		return f"{x/1000000:.1f} GB"
+	elif x >= 1000:
+		measurement_unit = "MB"
+		return f"{x/1000:.1f} MB"
+	else:
+		measurement_unit = "KB"
+		return f"{x:.1f} KB"
+
 try:
 	for container in containers:
-		df = pd.read_csv(args.foldername + '/'+ container +'/'+ container +'.csv', names=headers)
+		df = pd.read_csv(f"{args.foldername}/{container}/{container}.csv", names=headers)
 		df_merge.append(df)
 		for key, value in components.items():
-			print("plotting Database " + value[0] + " usage ...")
+			print(f"plotting {container} {value[0]} usage ...")
 			plt.title(value[0])
 			plt.xlabel('Time (sec)') 
 			plt.ylabel(value[0])
 			plt.plot(df["time"], df[value[1]])
-			plt.savefig(args.foldername +'/'+ container +'/'+ key +'plot.svg')
+
+			if key == "Block_I" or key == "Block_O":
+				ax = plt.gca()
+				ax.yaxis.set_major_formatter(change_unit)
+				plt.title(f"{value[0]} ({measurement_unit})")
+
+			plt.savefig(f"{args.foldername}/{container}/{key}plot.svg")
 			plt.clf()
 
 except Exception as e:
@@ -51,5 +69,11 @@ for key, value in components.items():
 		plt.plot(df["time"], df[value[1]],color=colors[index],label=containers[index])
 		index+=1
 	plt.legend(loc="center right")
-	plt.savefig(args.foldername + '/comparison_plots/' + key + 'plot.svg')
+
+	if key == "Block_I" or key == "Block_O":
+		ax = plt.gca()
+		ax.yaxis.set_major_formatter(change_unit)
+		plt.title(f"{value[0]} ({measurement_unit})")
+
+	plt.savefig(f"{args.foldername}/comparison_plots/{key}plot.svg")
 	plt.clf()
