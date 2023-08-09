@@ -36,12 +36,12 @@ do
 			gsub("kB","",$11); binput=$11;
 		}
 		else{
-			if(index($11,"MiB")){
-				gsub("MiB","",$11); binput=$11*1000;
+			if(index($11,"MB")){
+				gsub("MB","",$11); binput=$11*1000;
 			}
 			else{
-				if(index($11,"GiB")){
-					gsub("GiB","",$11); binput=$11*1000000;
+				if(index($11,"GB")){
+					gsub("GB","",$11); binput=$11*1000000;
 				}
 				else{
 					gsub("B","",$11); binput=$11/1000;
@@ -52,12 +52,12 @@ do
 			gsub("kB","",$13); boutput=$13;
 		}
 		else{
-			if(index($13,"MiB")){
-				gsub("MiB","",$13); boutput=$13*1000;
+			if(index($13,"MB")){
+				gsub("MB","",$13); boutput=$13*1000;
 			}
 			else{
-				if(index($13,"GiB")){
-					gsub("GiB","",$13); boutput=$13*1000000;
+				if(index($13,"GB")){
+					gsub("GB","",$13); boutput=$13*1000000;
 				}
 				else {
 					gsub("B","",$13); boutput=$13/1000;
