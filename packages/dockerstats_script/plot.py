@@ -33,6 +33,14 @@ def change_unit(x, pos):
 	else:
 		measurement_unit = "KB"
 		return f"{x:.1f} KB"
+def change_m_unit(x):
+	global measurement_unit 
+	if x >= 1000000:
+		measurement_unit = "GB"
+	elif x >= 1000:
+		measurement_unit = "MB"
+	else:
+		measurement_unit = "KB"
 
 try:
 	for container in containers:
@@ -48,8 +56,9 @@ try:
 			if key == "Block_I" or key == "Block_O":
 				ax = plt.gca()
 				ax.yaxis.set_major_formatter(change_unit)
+				change_m_unit(df[value[1]].max())
 				plt.title(f"{value[0]} ({measurement_unit})")
-
+				
 			plt.savefig(f"{args.foldername}/{container}/{key}plot.svg")
 			plt.clf()
 
