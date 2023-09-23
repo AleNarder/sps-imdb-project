@@ -1,4 +1,4 @@
-# SPS-IMDB-PROJECT
+# Software Performance And Scalability
 
 This is the repository of the project for the 2022-2023 Software Performance And Scalability course
 
