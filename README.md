@@ -1,6 +1,6 @@
 # SPS-IMDB-PROJECT
 
-This is the repository of the project for the 2022-2023 SPS course
+This is the repository of the project for the 2022-2023 Software Performance And Scalability course
 
 ## Dependencies
 
